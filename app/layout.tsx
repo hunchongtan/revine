@@ -8,7 +8,7 @@ import Link from "next/link"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "vine",
+  title: "ReVine",
   description: "Create viral Vine-inspired videos in seconds",
 }
 
@@ -28,7 +28,7 @@ export default function RootLayout({
             
             {/* Center: Vine Logo */}
             <Link href="/" className="flex items-center justify-center">
-              <Image src="/icon.svg" alt="vine" width={70} height={70} className="brightness-0 invert" />
+              <Image src="/icon_header.svg" alt="vine" width={70} height={70} className="brightness-0 invert" />
             </Link>
             
             {/* Right: User menu */}
