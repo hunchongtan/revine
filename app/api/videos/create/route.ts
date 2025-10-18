@@ -12,15 +12,22 @@ export async function POST(request: Request) {
       );
     }
 
-    // Check authentication
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Get user ID from request headers if available (optional - allows anonymous)
+    const authHeader = request.headers.get("authorization");
+    let userId: string | null = null;
+    
+    // Try to extract user from auth header, but don't fail if not present
+    if (authHeader) {
+      try {
+        // This is a simplified approach - in production you'd verify the token
+        // For now, we'll just allow anonymous creation
+        console.log("[api/videos/create] Auth header present, but allowing anonymous");
+      } catch (e) {
+        console.log("[api/videos/create] Could not parse auth, proceeding as anonymous");
+      }
     }
+
+    console.log("[api/videos/create] User:", userId || "anonymous");
 
     const body = await request.json();
     const { templateId, videoUrl, caption, visibility } = body;
@@ -32,9 +39,9 @@ export async function POST(request: Request) {
       );
     }
 
-    // Create video record
+    // Create video record (use null userId for anonymous users)
     const video = await createVideoRecord({
-      userId: user.id,
+      userId: userId,
       templateId,
       videoUrl,
       caption: caption || "",

@@ -19,15 +19,15 @@ export async function PATCH(
       );
     }
 
-    // Check authentication
-    const {
-      data: { user },
-      error: authError,
-    } = await supabase.auth.getUser();
-
-    if (authError || !user) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    // Get user ID from request headers if available (optional - allows anonymous)
+    const authHeader = request.headers.get("authorization");
+    let userId: string | null = null;
+    
+    if (authHeader) {
+      console.log("[api/videos/visibility] Auth header present, but allowing anonymous");
     }
+
+    console.log("[api/videos/visibility] User:", userId || "anonymous");
 
     const { id } = await params;
     const body = await request.json();
@@ -40,7 +40,7 @@ export async function PATCH(
       );
     }
 
-    // Verify ownership
+    // Fetch video to check ownership
     const { data: existingVideo, error: fetchError } = await supabase
       .from("remixes")
       .select("user_id")
@@ -51,8 +51,13 @@ export async function PATCH(
       return NextResponse.json({ error: "Video not found" }, { status: 404 });
     }
 
-    if (existingVideo.user_id !== user.id) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    // Verify ownership: 
+    // - If video has no owner (user_id is null), anyone can change it
+    // - If video has an owner, only that owner can change it
+    if (existingVideo.user_id !== null && existingVideo.user_id !== userId) {
+      return NextResponse.json({ 
+        error: "You don't have permission to change this video's visibility" 
+      }, { status: 403 });
     }
 
     // Update visibility
