@@ -4,6 +4,8 @@
 
 Create viral Vine-inspired videos in seconds with AI-powered generation. Turn yourself into classic Vine memes using cutting-edge AI technology.
 
+🎬 **[Try out the demo here](https://revine-sigma.vercel.app/)**
+
 ## ✨ Features
 
 ### Core Functionality
