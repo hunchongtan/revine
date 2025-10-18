@@ -149,6 +149,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
       <ResultPlayer
         videoUrl={result.videoUrl}
         caption={result.caption}
+        templateId={template.id}
         onDownload={handleDownload}
         onCopyCaption={handleCopyCaption}
         onGenerateAgain={handleGenerateAgain}

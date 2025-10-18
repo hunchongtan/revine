@@ -107,6 +107,9 @@ export interface Database {
           video_url: string;
           caption: string | null;
           is_public: boolean;
+          visibility: 'private' | 'public';
+          share_token: string;
+          slug: string | null;
           views_count: number;
           created_at: string;
           updated_at: string;
@@ -118,6 +121,9 @@ export interface Database {
           video_url: string;
           caption?: string | null;
           is_public?: boolean;
+          visibility?: 'private' | 'public';
+          share_token?: string;
+          slug?: string | null;
           views_count?: number;
           created_at?: string;
           updated_at?: string;
@@ -129,6 +135,9 @@ export interface Database {
           video_url?: string;
           caption?: string | null;
           is_public?: boolean;
+          visibility?: 'private' | 'public';
+          share_token?: string;
+          slug?: string | null;
           views_count?: number;
           created_at?: string;
           updated_at?: string;
