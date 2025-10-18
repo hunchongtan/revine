@@ -89,6 +89,9 @@ function NavIcon({ href, icon, label, requiresAuth = false }: NavIconProps) {
 export function Navbar() {
   const { user, signOut } = useAuth()
   const [showAuthModal, setShowAuthModal] = useState(false)
+  const pathname = usePathname()
+  
+  const isGeneratePage = pathname?.startsWith('/generate')
 
   const handleSignOut = async () => {
     await signOut()
@@ -97,8 +100,49 @@ export function Navbar() {
   return (
     <TooltipProvider delayDuration={300}>
       <nav className="bg-[#00B488] h-[70px] flex items-center justify-between px-4 sticky top-0 z-50 shadow-[0_1px_2px_rgba(0,0,0,0.1)]">
-        {/* Left Spacer */}
-        <div className="flex-1" />
+        {/* Left: Help Tooltip (on generate page) */}
+        <div className="flex-1 flex items-center">
+          {isGeneratePage && (
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white transition-all">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={2}
+                    stroke="currentColor"
+                    className="w-4 h-4"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.879 7.519c1.171-1.025 3.071-1.025 4.242 0 1.172 1.025 1.172 2.687 0 3.712-.203.179-.43.326-.67.442-.745.361-1.45.999-1.45 1.827v.75M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-9 5.25h.008v.008H12v-.008z"
+                    />
+                  </svg>
+                  <span className="text-xs font-medium hidden sm:inline">How it works</span>
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="bottom" className="max-w-sm bg-[#333] text-white p-4">
+                <p className="font-semibold mb-3 text-base">Create Your ReVine</p>
+                <div className="space-y-2">
+                  <div className="flex gap-2">
+                    <span className="font-bold text-[#00bf8f]">Step 1:</span>
+                    <span className="text-sm">Upload an image of yourself</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="font-bold text-[#00bf8f]">Step 2:</span>
+                    <span className="text-sm">Choose a voice style (optional)</span>
+                  </div>
+                  <div className="flex gap-2">
+                    <span className="font-bold text-[#00bf8f]">Step 3:</span>
+                    <span className="text-sm">Click generate and watch the magic happen! ✨</span>
+                  </div>
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          )}
+        </div>
 
         {/* Center: Logo + Tagline */}
         <Link href="/" className="flex flex-col items-center justify-center gap-1">
