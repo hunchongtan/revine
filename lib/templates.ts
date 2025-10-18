@@ -24,7 +24,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Do It For The Vine". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person performs a small stunt in front of the camera while someone off-screen reacts with excitement.",
+      "Subject performs a small stunt in front of the camera while someone off-screen reacts with excitement.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "triumphant one-liner ≤10 words + #VineEnergy",
   },
@@ -38,7 +38,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Won\'t Eat His Cereal". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person sits at a table while someone off-screen offers a spoon; person turns their head away in refusal.",
+      "Subject sits at a table while someone off-screen offers a spoon; subject turns their head away in refusal.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "funny breakfast moment ≤8 words",
   },
@@ -52,7 +52,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Duck Army Scream". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person stands surrounded by toy ducks while opening their mouth to scream dramatically.",
+      "Subject stands surrounded by toy ducks while opening their mouth to scream dramatically.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "chaotic energy ≤5 words",
   },
@@ -67,7 +67,7 @@ export const templates: Template[] = [
     videoPrompt:
       "Recreate the Vine called \"I'm in me mum's car\". Neutral, non-identifying, family-friendly.",
     sceneDescription:
-      "Person sits in the driver's seat while mimicking driving motions toward the camera.",
+      "Subject sits in the driver's seat while mimicking driving motions toward the camera.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "cheeky car moment ≤8 words",
   },
@@ -81,7 +81,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Look at all those chickens". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person extends their arm toward birds in a field while standing outdoors; gesture is exaggerated for emphasis.",
+      "Subject extends their arm toward birds in a field while standing outdoors; gesture is exaggerated for emphasis.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "nature observation ≤6 words",
   },
@@ -95,7 +95,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Hurricane Tortilla". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person stands in a kitchen while tossing a tortilla into the air; movement is overly dramatic.",
+      "Subject stands in a kitchen while tossing a tortilla into the air; movement is overly dramatic.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "food pun ≤8 words",
   },
@@ -109,7 +109,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Stop! I could\'ve dropped my croissant". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person walks down a hallway holding a croissant while someone off-screen startles them; person reacts dramatically.",
+      "Subject walks down a hallway holding a croissant while someone off-screen startles them; subject reacts dramatically.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "dramatic food moment ≤8 words",
   },
@@ -123,7 +123,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Eyebrows on fleek". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person poses for a selfie while raising eyebrows confidently toward the camera.",
+      "Subject poses for a selfie while raising eyebrows confidently toward the camera.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "beauty flex ≤4 words",
   },
@@ -137,7 +137,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "That was legitness". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person completes a trick or action while the camera captures the moment; person celebrates with excitement.",
+      "Subject completes a trick or action while the camera captures the moment; subject celebrates with excitement.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "trick moment ≤4 words",
   },
@@ -152,7 +152,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Why You Lying?". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person lip-syncs toward the camera while pointing with exaggerated attitude; facial expressions are animated.",
+      "Subject lip-syncs toward the camera while pointing with exaggerated attitude; facial expressions are animated.",
     beatSheet: [0, 1, 3.5, 5.5, 6],
     captionPrompt: "cheeky call-out + 1 short hashtag",
   },
@@ -166,7 +166,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Deez Nuts, ha! got eem". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person speaks into a phone while delivering a punchline; person laughs triumphantly afterward.",
+      "Subject speaks into a phone while delivering a punchline; subject laughs triumphantly afterward.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "prank victory ≤6 words",
   },
@@ -180,7 +180,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "What Are Those?". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person points the camera down toward someone's shoes while reacting with mock disbelief; zoom is exaggerated.",
+      "Subject points the camera down toward someone's shoes while reacting with mock disbelief; zoom is exaggerated.",
     beatSheet: [0, 1.5, 3.2, 5, 6],
     captionPrompt: "1-line nostalgic roast + ≤2 short hashtags",
   },
@@ -194,7 +194,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "It\'s Wednesday, my dudes". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person wears goggles in a bathroom while announcing the day; person raises arms and screams loudly.",
+      "Subject wears goggles in a bathroom while announcing the day; subject raises arms and screams loudly.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "weekly announcement ≤5 words",
   },
@@ -208,7 +208,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Two bros chillin\' in a hot tub". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person sits in a hot tub while another person sits nearby; both appear relaxed and casual.",
+      "Subject sits in a hot tub while another  sits nearby; both appear relaxed and casual.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "chill moment ≤8 words",
   },
@@ -222,7 +222,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Miss Keisha?! She dead". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person reacts with shock while looking at something off-screen; person collapses dramatically.",
+      "Subject reacts with shock while looking at something off-screen; subject collapses dramatically.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "shocked reaction ≤5 words",
   },
@@ -236,7 +236,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "So, no head?". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person holds a phone while staring with a neutral expression; person asks a question without emotion.",
+      "Subject holds a phone while staring with a neutral expression; subject asks a question without emotion.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "absurd question ≤4 words",
   },
@@ -250,7 +250,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "A potato flew around my room". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person stands in a room while a potato on a string moves through the air; person watches without reacting.",
+      "Subject stands in a room while a potato on a string moves through the air; subject watches without reacting.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "surreal moment ≤6 words",
   },
@@ -264,7 +264,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Iridocyclitis." Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person stands at a podium while spelling a word confidently; camera zooms dramatically on their face.",
+      "Subject stands at a podium while spelling a word confidently; camera zooms dramatically on their face.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "word moment ≤2 words",
   },
@@ -279,7 +279,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Hi, welcome to Chili\'s". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person stands in a doorway while striking an enthusiastic pose; person gestures as if welcoming someone.",
+      "Subject stands in a doorway while striking an enthusiastic pose; subject gestures as if welcoming someone.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "restaurant greeting ≤5 words",
   },
@@ -293,7 +293,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Road work ahead? Uh, yeah, I sure hope it does". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person sits in a car while pointing toward a road sign; person delivers a sarcastic line casually.",
+      "Subject sits in a car while pointing toward a road sign; subject delivers a sarcastic line casually.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "road sign joke ≤8 words",
   },
@@ -307,7 +307,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "LeBROOOON JAAAAMES!". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person yells a name loudly while raising arms in excitement; tone mimics a sports announcer.",
+      "Subject yells a name loudly while raising arms in excitement; tone mimics a sports announcer.",
     beatSheet: [0, 1, 2.5, 3, 5, 6],
     captionPrompt: "playful sports meme ≤12 words + 1 hashtag",
   },
@@ -321,7 +321,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Free shavacadoo". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Person points at a storefront sign while mispronouncing the text; reaction is overly enthusiastic.",
+      "Subject points at a storefront sign while mispronouncing the text; reaction is overly enthusiastic.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "sign misread ≤4 words",
   },
