@@ -23,12 +23,10 @@ export default function Home() {
   useEffect(() => {
     async function loadTemplates() {
       try {
-        console.log("🔍 [HomePage] Fetching templates from Supabase...")
         const data = await fetchTemplates(user?.id)
-        console.log("✅ [HomePage] Fetched templates:", data.length, "templates")
         setTemplates(data)
       } catch (error) {
-        console.error("❌ [HomePage] Failed to load templates:", error)
+        console.error("Failed to load templates:", error)
       } finally {
         setLoading(false)
       }
@@ -61,10 +59,10 @@ export default function Home() {
   }
 
   const handleSignInClick = () => {
-    // Trigger click on the user menu icon in the header
-    const userMenuButton = document.querySelector('header button[class*="bg-white/20"]') as HTMLButtonElement
-    if (userMenuButton) {
-      userMenuButton.click()
+    // Trigger click on the sign in button in the navbar
+    const signInButton = document.querySelector('nav button') as HTMLButtonElement
+    if (signInButton) {
+      signInButton.click()
     }
   }
 

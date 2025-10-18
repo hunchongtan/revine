@@ -8,11 +8,17 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 
 interface AuthModalProps {
-  open: boolean
-  onClose: () => void
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  message?: string
 }
 
-export function AuthModal({ open, onClose }: AuthModalProps) {
+export function AuthModal({ open, onOpenChange, message }: AuthModalProps) {
+  const handleClose = () => {
+    if (onOpenChange) {
+      onOpenChange(false)
+    }
+  }
   const { signInWithMagicLink, signIn, signUp } = useAuth()
   const [mode, setMode] = useState<"magic" | "signin" | "signup">("magic")
   const [email, setEmail] = useState("")
@@ -31,7 +37,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
       toast.error(error.message)
     } else {
       toast.success("Check your email for the magic link!")
-      onClose()
+      handleClose()
     }
   }
 
@@ -47,7 +53,7 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
       toast.error(error.message)
     } else {
       toast.success("Signed in successfully!")
-      onClose()
+      handleClose()
     }
   }
 
@@ -63,17 +69,20 @@ export function AuthModal({ open, onClose }: AuthModalProps) {
       toast.error(error.message)
     } else {
       toast.success("Account created! Check your email to verify.")
-      onClose()
+      handleClose()
     }
   }
 
   return (
-    <Dialog open={open} onOpenChange={onClose}>
+    <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-center">
             {mode === "magic" ? "Sign in to ReVine" : mode === "signin" ? "Welcome back" : "Create account"}
           </DialogTitle>
+          {message && (
+            <p className="text-center text-sm text-[#8a8a8a] pt-2">{message}</p>
+          )}
         </DialogHeader>
 
         <div className="space-y-4 py-4">

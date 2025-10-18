@@ -1,4 +1,3 @@
-import { env, hasEnvVar, warnMissingEnv } from "@/lib/env";
 import type { Database } from "@/types/database";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
@@ -21,21 +20,16 @@ export function getSupabaseBrowserClient(): SupabaseClient<Database> | null {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn("❌ [Supabase Browser Client] Environment variables missing");
     return null;
   }
 
   if (!cachedClient) {
-    cachedClient = createClient<Database>(
-      supabaseUrl,
-      supabaseAnonKey,
-      {
-        auth: {
-          persistSession: false,
-          detectSessionInUrl: false,
-        },
-      }
-    );
+    cachedClient = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: false,
+        detectSessionInUrl: false,
+      },
+    });
   }
 
   return cachedClient;
@@ -56,31 +50,20 @@ export function getSupabaseAuthClient(): SupabaseClient<Database> | null {
   const supabaseAnonKey =
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY;
 
-  console.log("🔍 [Supabase] Checking environment variables...");
-  console.log("  NEXT_PUBLIC_SUPABASE_URL:", supabaseUrl ? "✅ Set" : "❌ Missing", supabaseUrl?.substring(0, 30));
-  console.log("  NEXT_PUBLIC_SUPABASE_ANON_KEY:", supabaseAnonKey ? "✅ Set" : "❌ Missing", supabaseAnonKey?.substring(0, 30));
-
   if (!supabaseUrl || !supabaseAnonKey) {
-    console.warn("❌ [Supabase] Environment variables missing");
     return null;
   }
 
   if (!cachedAuthClient) {
-    console.log("✅ [Supabase] Creating new auth client...");
-    cachedAuthClient = createClient<Database>(
-      supabaseUrl,
-      supabaseAnonKey,
-      {
-        auth: {
-          persistSession: true,
-          autoRefreshToken: true,
-          detectSessionInUrl: true,
-          storage:
-            typeof window !== "undefined" ? window.localStorage : undefined,
-        },
-      }
-    );
-    console.log("✅ [Supabase] Auth client created successfully");
+    cachedAuthClient = createClient<Database>(supabaseUrl, supabaseAnonKey, {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+        storage:
+          typeof window !== "undefined" ? window.localStorage : undefined,
+      },
+    });
   }
 
   return cachedAuthClient;
