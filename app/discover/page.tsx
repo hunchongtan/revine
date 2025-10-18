@@ -1,48 +1,82 @@
-"use client"
-
-import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { getSupabaseServiceClient } from "@/lib/supabase-server"
+import { getShareableUrl } from "@/lib/video-sharing"
+import { VideoCard } from "@/components/video-card"
+import type { Database } from "@/types/database"
 
-export default function DiscoverPage() {
+type VideoRecord = Database["public"]["Tables"]["remixes"]["Row"]
+
+async function getPublicVideos(): Promise<VideoRecord[]> {
+  const supabase = getSupabaseServiceClient()
+  if (!supabase) {
+    console.error("[discover] Supabase client not available")
+    return []
+  }
+
+  const { data: videos, error } = await supabase
+    .from("remixes")
+    .select("*")
+    .eq("visibility", "public")  // Only public videos
+    .order("created_at", { ascending: false })
+    .limit(100)
+
+  if (error) {
+    console.error("[discover] Failed to get videos:", error)
+    return []
+  }
+
+  console.log("[discover] Fetched videos from DB:", videos?.length || 0)
+  
+  // Remove duplicates by video_url (in case there are duplicate records)
+  const uniqueVideos = videos ? 
+    Array.from(new Map(videos.map(v => [v.video_url, v])).values()) : 
+    []
+
+  console.log("[discover] After deduplication:", uniqueVideos.length)
+  
+  return uniqueVideos
+}
+
+export default async function DiscoverPage() {
+  const videos = await getPublicVideos()
+
   return (
     <main className="min-h-screen bg-[#f3f3f3]">
       {/* Hero Section */}
       <section className="bg-white border-b border-[#e6e6e6] py-8">
-        <div className="max-w-6xl mx-auto px-4 text-center">
+        <div className="max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-3xl font-bold text-[#333] mb-2">Discover</h1>
-          <p className="text-[#8a8a8a]">Explore Vines created by the community</p>
+          <p className="text-[#8a8a8a]">
+            {videos.length} {videos.length === 1 ? "Vine" : "Vines"} from the community
+          </p>
         </div>
       </section>
 
-      {/* Coming Soon Content */}
-      <section className="max-w-6xl mx-auto px-4 py-12">
-        <div className="bg-white rounded-lg p-12 border border-[#e6e6e6] text-center">
-          <div className="max-w-2xl mx-auto">
+      {/* Video Grid */}
+      <section className="max-w-7xl mx-auto px-4 py-8">
+        {videos.length === 0 ? (
+          <div className="bg-white rounded-lg p-12 border border-[#e6e6e6] text-center">
             <h2 className="text-2xl font-bold text-[#333] mb-4">
-              Coming Soon — The ReVine Feed 🎬
+              No public videos yet! 🎬
             </h2>
             <p className="text-[#8a8a8a] mb-8">
-              Soon you&apos;ll be able to browse and share Vines created by the community.
-              Discover the best remixes, trending templates, and viral moments.
+              Be the first to create a Vine and make it public to share with the world.
             </p>
-            
-            {/* Mock Video Grid Preview */}
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
-              {[1, 2, 3, 4, 5, 6].map((i) => (
-                <div
-                  key={i}
-                  className="aspect-square bg-[#f3f3f3] rounded-lg border-2 border-dashed border-[#e6e6e6] flex items-center justify-center"
-                >
-                  <p className="text-[#8a8a8a] text-sm">Video {i}</p>
-                </div>
-              ))}
-            </div>
-
-            <Button asChild className="bg-[#00bf8f] hover:bg-[#00a77a] text-white font-semibold">
-              <Link href="/">Browse Templates</Link>
-            </Button>
+            <Link
+              href="/"
+              className="inline-block bg-[#00bf8f] hover:bg-[#00a77a] text-white font-semibold px-6 py-3 rounded-full transition-colors"
+            >
+              Create Your First Vine
+            </Link>
           </div>
-        </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
+            {videos.map((video) => {
+              const shareUrl = getShareableUrl(video)
+              return <VideoCard key={video.id} video={video} shareUrl={shareUrl} />
+            })}
+          </div>
+        )}
       </section>
     </main>
   )
