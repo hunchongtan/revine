@@ -25,6 +25,7 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
   const [isSharing, setIsSharing] = useState(false)
   const [isChangingVisibility, setIsChangingVisibility] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
+  const creatingVideoRef = useRef<boolean>(false)  // Prevent duplicate creation
   const { toast } = useToast()
 
   const bust = (url?: string) => {
@@ -55,10 +56,12 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
         savedVideoId,
         videoUrl: videoUrl?.substring(0, 50),
         templateId,
-        shouldCreate: !savedVideoId && videoUrl && templateId
+        isCreating: creatingVideoRef.current,
+        shouldCreate: !savedVideoId && videoUrl && templateId && !creatingVideoRef.current
       });
 
-      if (!savedVideoId && videoUrl && templateId) {
+      if (!savedVideoId && videoUrl && templateId && !creatingVideoRef.current) {
+        creatingVideoRef.current = true;  // Mark as creating to prevent duplicates
         console.log("[ResultPlayer] Creating video record...");
         try {
           const res = await fetch("/api/videos/create", {
@@ -87,9 +90,11 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
           } else {
             const error = await res.json();
             console.error("[ResultPlayer] Failed to create video:", error);
+            creatingVideoRef.current = false;  // Reset on error so user can retry
           }
         } catch (error) {
           console.error("[ResultPlayer] Create video error:", error);
+          creatingVideoRef.current = false;  // Reset on error so user can retry
         }
       }
     };
