@@ -1,6 +1,5 @@
 "use client"
 
-import Link from "next/link"
 import type { Database } from "@/types/database"
 
 type VideoRecord = Database["public"]["Tables"]["remixes"]["Row"]
@@ -12,9 +11,8 @@ interface VideoCardProps {
 
 export function VideoCard({ video, shareUrl }: VideoCardProps) {
   return (
-    <Link
-      href={shareUrl}
-      className="group relative aspect-[9/16] bg-black rounded-lg overflow-hidden border-2 border-[#e6e6e6] hover:border-[#00bf8f] transition-colors"
+    <div
+      className="group relative aspect-[9/16] bg-black rounded-lg overflow-hidden border-2 border-[#e6e6e6] transition-colors"
     >
       <video
         src={video.video_url}
@@ -57,7 +55,7 @@ export function VideoCard({ video, shareUrl }: VideoCardProps) {
           </svg>
         </div>
       </div>
-    </Link>
+    </div>
   )
 }
 
