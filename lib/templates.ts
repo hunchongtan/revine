@@ -38,7 +38,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Won\'t Eat His Cereal". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Subject sits at a table while someone off-screen offers a spoon; subject turns their head away in refusal.",
+      "An adult subject sits at a table while a hand off-screen offers a spoon; subject turns their head away in refusal.", // 👈 Added "An adult subject"
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "funny breakfast moment ≤8 words",
   },
@@ -55,8 +55,7 @@ export const templates: Template[] = [
       "Subject stands surrounded by toy ducks while opening their mouth wide.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "chaotic energy ≤5 words",
-  },
-  // 2014
+  }, // 2014
   {
     id: "mums_car",
     name: "I'm in me mum's car",
@@ -65,9 +64,9 @@ export const templates: Template[] = [
     delivery: "full_line",
     audioScript: "I'm in me mum's car. Vroom vroom.",
     videoPrompt:
-      "Recreate the Vine called \"I'm in me mum's car\". Neutral, non-identifying, family-friendly.",
+      "Recreate a famous comedic monologue. Neutral, non-identifying, family-friendly. **The subject is an adult.**", // 👈 REMOVED TITLE REFERENCE
     sceneDescription:
-      "Subject sits in the driver's seat while mimicking driving motions toward the camera.",
+      "An adult subject is seated in a generic, non-moving chair with a high back, mimicking a driver's hand motions and speaking toward the camera.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "cheeky car moment ≤8 words",
   },
@@ -140,8 +139,7 @@ export const templates: Template[] = [
       "Subject completes a trick or action while the camera captures the moment; subject celebrates with excitement.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "trick moment ≤4 words",
-  },
-  // 2015
+  }, // 2015
   {
     id: "why_lying",
     name: "Why You Lying?",
@@ -150,9 +148,9 @@ export const templates: Template[] = [
     delivery: "full_line",
     audioScript: "Why you always lyin'… hmm? Why you always lyin'!",
     videoPrompt:
-      'Recreate the Vine called "Why You Lying?". Neutral, non-identifying, family-friendly.',
+      'Recreate the Vine called "Why You Lying?". Neutral, non-identifying, family-friendly. **The subject is an adult.**', // 👈 Added "The subject is an adult."
     sceneDescription:
-      "Subject lip-syncs toward the camera while pointing with emphasis; facial expressions are animated.",
+      "An adult subject lip-syncs toward the camera while pointing with emphasis; facial expressions are animated.", // 👈 Added "An adult subject"
     beatSheet: [0, 1, 3.5, 5.5, 6],
     captionPrompt: "cheeky call-out + 1 short hashtag",
   },
@@ -178,9 +176,9 @@ export const templates: Template[] = [
     delivery: "full_line",
     audioScript: "WHAT ARE THOOOOOSE?!",
     videoPrompt:
-      'Recreate the Vine called "What Are Those?". Neutral, non-identifying, family-friendly.',
+      'Recreate the Vine called "What Are Those?". Neutral, non-identifying, family-friendly. **The subject is an adult.**', // 👈 Added "The subject is an adult."
     sceneDescription:
-      "Subject points the camera down toward someone's shoes while reacting with surprise; camera zooms for emphasis.",
+      "**An adult subject** points the camera down toward someone's shoes while reacting with surprise; camera zooms for emphasis.", // 👈 Added "An adult subject"
     beatSheet: [0, 1.5, 3.2, 5, 6],
     captionPrompt: "1-line nostalgic roast + ≤2 short hashtags",
   },
@@ -208,7 +206,7 @@ export const templates: Template[] = [
     videoPrompt:
       'Recreate the Vine called "Two bros chillin\' in a hot tub". Neutral, non-identifying, family-friendly.',
     sceneDescription:
-      "Subject sits in a hot tub while another  sits nearby; both appear relaxed and casual.",
+      "Subject sits in a hot tub while another  sits nearby; both appear relaxed and casual.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "chill moment ≤8 words",
   },
@@ -267,8 +265,7 @@ export const templates: Template[] = [
       "Subject stands at a podium while spelling a word confidently; camera zooms on their face.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "word moment ≤2 words",
-  },
-  // 2016
+  }, // 2016
   {
     id: "hi_chilis",
     name: "Hi, welcome to Chili's",
@@ -299,15 +296,15 @@ export const templates: Template[] = [
   },
   {
     id: "lebron_james",
-    name: "LeBROOOON JAAAAMES!",
+    name: "Sports Announcer Energy",
     description: "Sports announcer energy",
     year: 2016,
     delivery: "full_line",
-    audioScript: "LeBROOOON JAAAAMES!",
+    audioScript: "He scores! What a champion!",
     videoPrompt:
-      'Recreate the Vine called "LeBROOOON JAAAAMES!". Neutral, non-identifying, family-friendly.',
+      "Recreate a famous enthusiastic sports chant. Neutral, non-identifying, family-friendly.", // 👈 REMOVED TITLE REFERENCE
     sceneDescription:
-      "Subject yells a name loudly while raising arms in excitement; tone mimics a sports announcer.",
+      "Subject yells loudly while raising arms in excitement; tone mimics a sports announcer.", // Kept simple
     beatSheet: [0, 1, 2.5, 3, 5, 6],
     captionPrompt: "playful sports meme ≤12 words + 1 hashtag",
   },

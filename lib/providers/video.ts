@@ -56,14 +56,8 @@ export async function persistVideoToSupabase(
  * includes beatSheet, lip-sync, continuous motion, no still frames.
  */
 function buildPromptStrict(template: Template, beatsCSV: string): string {
-  const sanitizeText = (t: string) =>
-    t
-      .replace(/\b(sassy|call[- ]?out)\b/gi, "playful")
-      .replace(/\b(why you always lyin')\b/gi, "the line")
-      .trim();
-
-  const opening = sanitizeText(template.videoPrompt);
-  const perf = sanitizeText(template.audioScript);
+  const opening = template.videoPrompt;
+  const perf = template.audioScript;
   const scene = template.sceneDescription
     ? `${template.sceneDescription}.`
     : "";
@@ -75,7 +69,7 @@ function buildPromptStrict(template: Template, beatsCSV: string): string {
     "Keep the same location, composition, background objects, and the characteristic low-res, slightly grainy 'Vine-era' look.",
     "Preserve textures, color cast, and any blur/noise. Do not change the background or replace it with elements from other images.",
     "",
-    "PRIORITY 2 — Subject/Face: Use ONLY the SECOND image for the performer's face/identity.",
+    "PRIORITY 2 — Subject/Face: **The subject is an adult.** Use ONLY the SECOND image for the performer's face/identity.", // <-- TIGHTENED LINE
     "Replicate subject's facial structure and expressions; do not import the second image's background, outfit, or colors.",
     "Body, outfit, and pose should follow the scene reference; face identity follows subject.",
     "",
@@ -96,20 +90,14 @@ function buildPromptStrict(template: Template, beatsCSV: string): string {
  * Baseline instructions only.
  */
 function buildPromptLight(template: Template, beatsCSV: string): string {
-  const sanitizeText = (t: string) =>
-    t
-      .replace(/\b(sassy|call[- ]?out)\b/gi, "playful")
-      .replace(/\b(why you always lyin')\b/gi, "the line")
-      .trim();
-
   const vineName = template.name || "classic Vine";
   const scene = template.sceneDescription
     ? ` ${template.sceneDescription}.`
     : "";
-  const perf = sanitizeText(template.audioScript);
+  const perf = template.audioScript;
 
   return [
-    `Recreate the Vine "${vineName}". Family-friendly.`,
+    `Recreate the Vine "${vineName}". Family-friendly. **The subject is an adult.**`,
     `${scene}`,
     "Use first image for scene background, second image for subject.",
     `Timing: ${beatsCSV} seconds.`,
@@ -129,6 +117,7 @@ export async function generateVideo({
   console.log("[video] ===== VIDEO GENERATION STARTED =====");
   console.log("[video] Template ID:", templateId);
   console.log("[video] Image URL:", imageUrl);
+  console.log("[video] Reference Thumbnail:", referenceThumbnail);
   console.log("[video] Mode:", mode);
 
   const startedAtMs = Date.now();
@@ -188,7 +177,19 @@ export async function generateVideo({
       isAbsoluteUrl(referenceThumbnail) &&
       isRemoteHost(referenceThumbnail)
     ) {
+      console.log(
+        "[video] ✅ Adding reference thumbnail as FIRST image:",
+        referenceThumbnail
+      );
       referenceImages.unshift(referenceThumbnail);
+    } else {
+      console.log("[video] ⚠️ Reference thumbnail NOT added. Checks:", {
+        exists: !!referenceThumbnail,
+        isAbsolute: referenceThumbnail
+          ? isAbsoluteUrl(referenceThumbnail)
+          : false,
+        isRemote: referenceThumbnail ? isRemoteHost(referenceThumbnail) : false,
+      });
     }
 
     // Build prompt based on mode
@@ -307,19 +308,6 @@ export async function generateVideo({
       err?.isContentPolicyViolation ||
       err?.body?.toLowerCase?.()?.includes("content_policy_violation") ||
       err?.body?.toLowerCase?.()?.includes("policy");
-
-    // Auto-retry once with light mode if strict failed with 422/policy violation
-    if (isContentViolation && mode === "strict") {
-      console.log(
-        "[video] ⚠️ Content policy violation during polling. Auto-retrying with light mode and no audio..."
-      );
-      return generateVideo({
-        templateId,
-        imageUrl,
-        referenceThumbnail,
-        mode: "light",
-      });
-    }
 
     // Enrich error with prompt mode if not already set
     const enrichedErr = err as { promptMode?: string };

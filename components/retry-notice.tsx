@@ -36,7 +36,7 @@ export function RetryNotice({
               disabled={isRetrying}
               className="bg-amber-600 hover:bg-amber-700 text-white font-semibold rounded-full px-6 py-2 transition-colors disabled:opacity-50"
             >
-              {isRetrying ? "Retrying..." : "Retry with Light Mode"}
+              {isRetrying ? "Retrying..." : "Retry"}
             </Button>
           )}
           {promptMode === "light" && (

@@ -73,6 +73,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
         body: JSON.stringify({ 
           templateId: template.id, 
           imageUrl,
+          referenceThumbnail: template.thumbnail || template.thumbnailUrl,
           mode 
         }),
       })
