@@ -1,5 +1,6 @@
 import { getSupabaseAuthClient } from "@/lib/supabase-client";
 import type { Database } from "@/types/database";
+import { SupabaseClient } from "@supabase/supabase-js";
 
 export type Template = Database["public"]["Tables"]["templates"]["Row"] & {
   isFavourite?: boolean;
@@ -64,13 +65,17 @@ export async function fetchTemplates(
         .select("template_id")
         .eq("user_id", userId);
 
-      const favouriteIds = new Set(favourites?.map((f) => f.template_id) || []);
+      const favouriteIds = new Set(
+        favourites?.map((f: { template_id: string }) => f.template_id) || []
+      );
       console.log("[Templates] User has", favouriteIds.size, "favourites");
 
-      return templates.map((template) => ({
-        ...template,
-        isFavourite: favouriteIds.has(template.id),
-      }));
+      return templates.map(
+        (template: Database["public"]["Tables"]["templates"]["Row"]) => ({
+          ...template,
+          isFavourite: favouriteIds.has(template.id),
+        })
+      );
     }
 
     return templates || [];
@@ -148,7 +153,8 @@ export async function addToFavourites(
   }
 
   try {
-    const { error } = await supabase
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { error } = await (supabase as any)
       .from("favourites")
       .insert({ user_id: userId, template_id: templateId });
 
@@ -171,10 +177,12 @@ export async function removeFromFavourites(
   userId: string,
   templateId: string
 ): Promise<boolean> {
-  const supabase = getSupabaseAuthClient();
-  if (!supabase) {
+  const supabaseRaw = getSupabaseAuthClient();
+  if (!supabaseRaw) {
     return false;
   }
+
+  const supabase: SupabaseClient<Database> = supabaseRaw;
 
   try {
     const { error } = await supabase
@@ -230,7 +238,8 @@ export async function syncLocalFavourites(userId: string): Promise<void> {
       .map((template_id) => ({ user_id: userId, template_id }));
 
     if (toInsert.length > 0) {
-      await supabase.from("favourites").insert(toInsert);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      await (supabase as any).from("favourites").insert(toInsert);
     }
 
     // Clear local storage after sync

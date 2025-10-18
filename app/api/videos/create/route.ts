@@ -1,10 +1,16 @@
-import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase-server";
+import { getSupabaseServiceClient } from "@/lib/supabase-server";
 import { createVideoRecord, getShareableUrl } from "@/lib/video-sharing";
+import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
   try {
-    const supabase = createClient();
+    const supabase = getSupabaseServiceClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Database unavailable" },
+        { status: 503 }
+      );
+    }
 
     // Check authentication
     const {
@@ -57,4 +63,3 @@ export async function POST(request: Request) {
     );
   }
 }
-

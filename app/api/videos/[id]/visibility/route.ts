@@ -1,14 +1,23 @@
-import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase-server";
-import { updateVideoVisibility, getShareableUrl } from "@/lib/video-sharing";
+import { getSupabaseServiceClient } from "@/lib/supabase-server";
 import type { VideoVisibility } from "@/lib/video-sharing";
+import { getShareableUrl, updateVideoVisibility } from "@/lib/video-sharing";
+import type { Database } from "@/types/database";
+import { NextResponse } from "next/server";
+
+type VideoRecord = Database["public"]["Tables"]["remixes"]["Row"];
 
 export async function PATCH(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const supabase = createClient();
+    const supabase = getSupabaseServiceClient();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: "Database unavailable" },
+        { status: 503 }
+      );
+    }
 
     // Check authentication
     const {
@@ -20,7 +29,7 @@ export async function PATCH(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { id } = params;
+    const { id } = await params;
     const body = await request.json();
     const { visibility } = body as { visibility: VideoVisibility };
 
@@ -36,7 +45,7 @@ export async function PATCH(
       .from("remixes")
       .select("user_id")
       .eq("id", id)
-      .single();
+      .single<Pick<VideoRecord, "user_id">>();
 
     if (fetchError || !existingVideo) {
       return NextResponse.json({ error: "Video not found" }, { status: 404 });
@@ -71,4 +80,3 @@ export async function PATCH(
     );
   }
 }
-

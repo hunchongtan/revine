@@ -3,13 +3,13 @@ import { getVideoBySlug } from "@/lib/video-sharing";
 import { VideoViewer } from "@/components/video-viewer";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     slug: string;
-  };
+  }>;
 }
 
 export default async function PublicVideoPage({ params }: PageProps) {
-  const { slug } = params;
+  const { slug } = await params;
 
   const video = await getVideoBySlug(slug);
 
@@ -21,7 +21,7 @@ export default async function PublicVideoPage({ params }: PageProps) {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { slug } = params;
+  const { slug } = await params;
   const video = await getVideoBySlug(slug);
 
   if (!video) {

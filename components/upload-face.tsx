@@ -83,11 +83,12 @@ export function UploadFace({ onImageSelect, preview }: UploadFaceProps) {
       toast({
         description: "Converted to PNG for compatibility",
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error('Normalization error:', error)
+      const err = error as { message?: string };
       toast({
         title: "Error",
-        description: error.message || "Failed to process image. Try a different file.",
+        description: err.message || "Failed to process image. Try a different file.",
         variant: "destructive",
       })
     } finally {

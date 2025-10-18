@@ -2,14 +2,15 @@
 
 import { useEffect, useState } from "react"
 import { useAuth } from "@/lib/hooks/use-auth"
-import { fetchTemplates, type Template } from "@/lib/services/templates"
+import { fetchTemplates } from "@/lib/services/templates"
+import { adaptNewTemplate, type UnifiedTemplate } from "@/lib/template-adapter"
 import { TemplateCard } from "@/components/template-card"
 import { useRouter } from "next/navigation"
 
 export default function FavouritesPage() {
   const { user, loading: authLoading } = useAuth()
   const router = useRouter()
-  const [templates, setTemplates] = useState<Template[]>([])
+  const [templates, setTemplates] = useState<UnifiedTemplate[]>([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -20,19 +21,16 @@ export default function FavouritesPage() {
     }
 
     if (user) {
+      const loadFavourites = async () => {
+        setLoading(true)
+        const allTemplates = await fetchTemplates(user.id)
+        const favourites = allTemplates.filter((t) => t.isFavourite).map(adaptNewTemplate)
+        setTemplates(favourites)
+        setLoading(false)
+      }
       loadFavourites()
     }
   }, [user, authLoading, router])
-
-  const loadFavourites = async () => {
-    if (!user) return
-
-    setLoading(true)
-    const allTemplates = await fetchTemplates(user.id)
-    const favourites = allTemplates.filter((t) => t.isFavourite)
-    setTemplates(favourites)
-    setLoading(false)
-  }
 
   if (authLoading || loading) {
     return (

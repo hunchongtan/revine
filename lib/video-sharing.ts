@@ -3,7 +3,7 @@
  * Handles video creation, visibility management, and URL generation
  */
 
-import { createClient } from "@/lib/supabase-server";
+import { getSupabaseServiceClient } from "@/lib/supabase-server";
 import type { Database } from "@/types/database";
 
 export type VideoVisibility = "private" | "public";
@@ -16,8 +16,7 @@ export type VideoUpdate = Database["public"]["Tables"]["remixes"]["Update"];
  * Generate shareable URL for a video
  */
 export function getShareableUrl(video: VideoRecord): string {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+  const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
 
   if (video.visibility === "public" && video.slug) {
     return `${baseUrl}/v/${video.slug}`;
@@ -36,7 +35,11 @@ export async function createVideoRecord(data: {
   caption: string;
   visibility?: VideoVisibility;
 }): Promise<VideoRecord | null> {
-  const supabase = createClient();
+  const supabase = getSupabaseServiceClient();
+  if (!supabase) {
+    console.error("[video-sharing] Supabase client not available");
+    return null;
+  }
 
   const { data: video, error } = await supabase
     .from("remixes")
@@ -65,7 +68,11 @@ export async function updateVideoVisibility(
   videoId: string,
   visibility: VideoVisibility
 ): Promise<VideoRecord | null> {
-  const supabase = createClient();
+  const supabase = getSupabaseServiceClient();
+  if (!supabase) {
+    console.error("[video-sharing] Supabase client not available");
+    return null;
+  }
 
   const { data: video, error } = await supabase
     .from("remixes")
@@ -91,7 +98,11 @@ export async function updateVideoVisibility(
 export async function getVideoByToken(
   token: string
 ): Promise<VideoRecord | null> {
-  const supabase = createClient();
+  const supabase = getSupabaseServiceClient();
+  if (!supabase) {
+    console.error("[video-sharing] Supabase client not available");
+    return null;
+  }
 
   const { data: video, error } = await supabase
     .from("remixes")
@@ -113,7 +124,11 @@ export async function getVideoByToken(
 export async function getVideoBySlug(
   slug: string
 ): Promise<VideoRecord | null> {
-  const supabase = createClient();
+  const supabase = getSupabaseServiceClient();
+  if (!supabase) {
+    console.error("[video-sharing] Supabase client not available");
+    return null;
+  }
 
   const { data: video, error } = await supabase
     .from("remixes")
@@ -134,7 +149,11 @@ export async function getVideoBySlug(
  * Increment view count for a video
  */
 export async function incrementVideoViews(videoId: string): Promise<void> {
-  const supabase = createClient();
+  const supabase = getSupabaseServiceClient();
+  if (!supabase) {
+    console.error("[video-sharing] Supabase client not available");
+    return null;
+  }
 
   await supabase.rpc("increment_video_views", { video_id: videoId });
 }
@@ -143,7 +162,11 @@ export async function incrementVideoViews(videoId: string): Promise<void> {
  * Get all public videos for discover page
  */
 export async function getPublicVideos(limit = 50): Promise<VideoRecord[]> {
-  const supabase = createClient();
+  const supabase = getSupabaseServiceClient();
+  if (!supabase) {
+    console.error("[video-sharing] Supabase client not available");
+    return null;
+  }
 
   const { data: videos, error } = await supabase
     .from("remixes")
@@ -204,4 +227,3 @@ export async function shareVideo(
 
   return { success: false, method: "error" };
 }
-

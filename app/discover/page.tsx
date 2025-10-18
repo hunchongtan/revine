@@ -22,7 +22,7 @@ export default function DiscoverPage() {
               Coming Soon — The ReVine Feed 🎬
             </h2>
             <p className="text-[#8a8a8a] mb-8">
-              Soon you'll be able to browse and share Vines created by the community.
+              Soon you&apos;ll be able to browse and share Vines created by the community.
               Discover the best remixes, trending templates, and viral moments.
             </p>
             

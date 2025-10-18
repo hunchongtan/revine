@@ -3,7 +3,7 @@
 import { useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
 import { fetchTemplate, getTemplateThumbnailUrl } from "@/lib/services/templates"
-import { adaptNewTemplate } from "@/lib/template-adapter"
+import { adaptNewTemplate, type UnifiedTemplate } from "@/lib/template-adapter"
 import { GeneratePanel } from "@/components/generate-panel"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -11,7 +11,7 @@ import Link from "next/link"
 export default function GeneratePage() {
   const searchParams = useSearchParams()
   const templateId = searchParams.get("template")
-  const [template, setTemplate] = useState<any>(null)
+  const [template, setTemplate] = useState<UnifiedTemplate | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {

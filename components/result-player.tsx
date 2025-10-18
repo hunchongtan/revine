@@ -4,7 +4,7 @@ import { useRef, useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Share2, Lock, Globe } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
-import type { VideoVisibility, VideoRecord } from "@/lib/video-sharing"
+import type { VideoVisibility } from "@/lib/video-sharing"
 
 interface ResultPlayerProps {
   videoUrl: string
@@ -12,12 +12,10 @@ interface ResultPlayerProps {
   videoId?: string
   templateId?: string
   onDownload: () => void
-  onCopyCaption: () => void
   onGenerateAgain: () => void
 }
 
-export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownload, onCopyCaption, onGenerateAgain }: ResultPlayerProps) {
-  const [copied, setCopied] = useState(false)
+export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownload, onGenerateAgain }: ResultPlayerProps) {
   const [refreshSeed, setRefreshSeed] = useState<number>(Date.now())
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false)
   const [loadError, setLoadError] = useState<string | null>(null)
@@ -27,13 +25,6 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
   const [isChangingVisibility, setIsChangingVisibility] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
   const { toast } = useToast()
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(caption)
-    setCopied(true)
-    onCopyCaption()
-    setTimeout(() => setCopied(false), 2000)
-  }
 
   const bust = (url?: string) => {
     if (!url) return "";
@@ -152,8 +143,8 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
           description: "Share link copied to clipboard",
         });
       }
-    } catch (error: any) {
-      if (error?.name !== "AbortError") {
+    } catch (error: unknown) {
+      if ((error as { name?: string })?.name !== "AbortError") {
         console.error("Share failed:", error);
         toast({
           title: "Error",
@@ -195,7 +186,7 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
       {/* Processing Disclaimer */}
       <div className="px-4 pt-3 text-xs text-[#8a8a8a]">
         <p>
-          If the video doesn't play yet, it may still be processing. Try Refresh.
+          If the video doesn&apos;t play yet, it may still be processing. Try Refresh.
         </p>
         {loadError && (
           <p className="mt-1 text-[#d46]">{loadError}</p>

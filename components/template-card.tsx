@@ -3,12 +3,13 @@
 import Link from "next/link"
 import Image from "next/image"
 import type { Template } from "@/lib/templates"
+import type { UnifiedTemplate } from "@/lib/template-adapter"
 import { useSearchParams } from "next/navigation"
 import { useState, useEffect } from "react"
 import { toast } from "sonner"
 
 interface TemplateCardProps {
-  template: Template
+  template: Template | UnifiedTemplate
 }
 
 export function TemplateCard({ template }: TemplateCardProps) {

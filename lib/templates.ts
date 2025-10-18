@@ -2,6 +2,7 @@ export interface Template {
   id: string;
   name: string;
   description: string;
+  thumbnail?: string;
   year: 2013 | 2014 | 2015 | 2016;
   delivery: string;
   audioScript: string;

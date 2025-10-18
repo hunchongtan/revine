@@ -1,17 +1,18 @@
 import { hasEnvVar, requireServerEnv, warnMissingEnv } from "@/lib/env";
+import type { Database } from "@/types/database";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
 type StorageUploadOptions = {
   bucket: string;
   path: string;
-  data: ArrayBuffer | Buffer | Blob | File | ReadableStream<any>;
+  data: ArrayBuffer | Buffer | Blob | File | ReadableStream<Uint8Array>;
   contentType?: string;
   upsert?: boolean;
 };
 
-let cachedClient: SupabaseClient | null = null;
+let cachedClient: SupabaseClient<Database> | null = null;
 
-export function getSupabaseServiceClient(): SupabaseClient | null {
+export function getSupabaseServiceClient(): SupabaseClient<Database> | null {
   if (!hasEnvVar("SUPABASE_URL") || !hasEnvVar("SUPABASE_SERVICE_ROLE_KEY")) {
     warnMissingEnv("SUPABASE_URL");
     warnMissingEnv("SUPABASE_SERVICE_ROLE_KEY");
@@ -19,7 +20,7 @@ export function getSupabaseServiceClient(): SupabaseClient | null {
   }
 
   if (!cachedClient) {
-    cachedClient = createClient(
+    cachedClient = createClient<Database>(
       requireServerEnv("SUPABASE_URL"),
       requireServerEnv("SUPABASE_SERVICE_ROLE_KEY"),
       {

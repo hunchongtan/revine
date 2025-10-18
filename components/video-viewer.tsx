@@ -4,7 +4,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Share2, ExternalLink } from "lucide-react";
-import { shareVideo, getShareableUrl } from "@/lib/video-sharing";
+import { shareVideo } from "@/lib/video-sharing";
 import type { VideoRecord } from "@/lib/video-sharing";
 import { useToast } from "@/hooks/use-toast";
 
@@ -51,8 +51,6 @@ export function VideoViewer({ video }: VideoViewerProps) {
       setIsSharing(false);
     }
   };
-
-  const shareUrl = getShareableUrl(video);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#00bf8f] to-[#00a77a] flex items-center justify-center p-4">

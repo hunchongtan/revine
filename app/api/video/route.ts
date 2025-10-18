@@ -23,7 +23,7 @@ export async function POST(request: Request) {
 
     console.log("[video-api] Calling generateVideo...");
     try {
-      const { videoUrl, promptMode } = await generateVideo({
+      const { videoUrl } = await generateVideo({
         templateId,
         imageUrl,
         referenceThumbnail,
@@ -36,8 +36,8 @@ export async function POST(request: Request) {
       };
 
       return NextResponse.json(response);
-    } catch (e: any) {
-      if (e?.code === "GENERATION_TIMEOUT") {
+    } catch (e: unknown) {
+      if ((e as { code?: string })?.code === "GENERATION_TIMEOUT") {
         return NextResponse.json(
           {
             error:
@@ -48,11 +48,19 @@ export async function POST(request: Request) {
       }
       throw e;
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[video-api] ❌ Video generation error:", error);
+    const errorObj = error as {
+      status?: number;
+      body?: string;
+      message?: string;
+    };
     const status =
-      error?.status && Number.isInteger(error.status) ? error.status : 500;
-    const detail = error?.body || error?.message || "Failed to generate video";
+      errorObj?.status && Number.isInteger(errorObj.status)
+        ? errorObj.status
+        : 500;
+    const detail =
+      errorObj?.body || errorObj?.message || "Failed to generate video";
     return NextResponse.json({ error: detail }, { status });
   }
 }

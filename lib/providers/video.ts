@@ -49,7 +49,7 @@ export async function persistVideoToSupabase(
   }
 }
 
-let warnedAboutStub = false;
+// Reserved for future use: const warnedAboutStub = false;
 
 /**
  * Build strict prompt: locks background to first image, face from second,
@@ -136,9 +136,9 @@ export async function generateVideo({
   const timeoutMs = 210_000; // ~3.5 minutes hard timeout to allow 3 min buffer
   const ensureWithinTimeout = () => {
     if (Date.now() - startedAtMs > timeoutMs) {
-      const err = new Error("GENERATION_TIMEOUT");
+      const err = new Error("GENERATION_TIMEOUT") as Error & { code: string };
       // mark for upstream handling
-      (err as any).code = "GENERATION_TIMEOUT";
+      err.code = "GENERATION_TIMEOUT";
       throw err;
     }
   };
@@ -246,19 +246,6 @@ export async function generateVideo({
         errorText.toLowerCase().includes("policy") ||
         errorText.toLowerCase().includes("safety");
 
-      // Auto-retry once with light mode if strict failed with 422/policy violation
-      if (isContentViolation && mode === "strict") {
-        console.log(
-          "[video] ⚠️ Content policy violation detected. Auto-retrying with light mode and no audio..."
-        );
-        return generateVideo({
-          templateId,
-          imageUrl,
-          referenceThumbnail,
-          mode: "light",
-        });
-      }
-
       const err: GenerateVideoError = new Error(
         `Fal.ai API error: ${response.status} ${response.statusText} - ${errorText}`
       );
@@ -293,7 +280,7 @@ export async function generateVideo({
     } else if (result?.request_id) {
       // Poll for completion only when queued
       const baseRequestUrl =
-        (result as any)?.response_url ||
+        (result as { response_url?: string })?.response_url ||
         `https://queue.fal.run/fal-ai/veo3.1/requests/${result.request_id}`;
       const videoUrl = await pollForVideoCompletion(
         result.request_id,
@@ -306,15 +293,21 @@ export async function generateVideo({
     } else {
       throw new Error("Unexpected response format from Fal.ai VEO API");
     }
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error("[video] Fal.ai integration error:", error);
 
     // Check if polling error also needs retry
+    const err = error as {
+      status?: number;
+      isContentPolicyViolation?: boolean;
+      message?: string;
+      body?: string;
+    };
     const isContentViolation =
-      error?.status === 422 ||
-      error?.isContentPolicyViolation ||
-      error?.body?.toLowerCase?.()?.includes("content_policy_violation") ||
-      error?.body?.toLowerCase?.()?.includes("policy");
+      err?.status === 422 ||
+      err?.isContentPolicyViolation ||
+      err?.body?.toLowerCase?.()?.includes("content_policy_violation") ||
+      err?.body?.toLowerCase?.()?.includes("policy");
 
     // Auto-retry once with light mode if strict failed with 422/policy violation
     if (isContentViolation && mode === "strict") {
@@ -330,8 +323,9 @@ export async function generateVideo({
     }
 
     // Enrich error with prompt mode if not already set
-    if (!error.promptMode) {
-      error.promptMode = mode;
+    const enrichedErr = err as { promptMode?: string };
+    if (!enrichedErr.promptMode) {
+      enrichedErr.promptMode = mode;
     }
 
     // Surface upstream so API can return the real status (e.g., 422)
@@ -369,7 +363,7 @@ async function pollForVideoCompletion(
         if (status?.logs?.length) {
           try {
             const messages = status.logs
-              .map((l: any) => l?.message)
+              .map((l: { message?: string }) => l?.message)
               .filter(Boolean)
               .join(" | ");
             if (messages) console.log(`[video] logs: ${messages}`);
@@ -388,9 +382,9 @@ async function pollForVideoCompletion(
           });
           if (!resultResponse.ok) {
             const text = await resultResponse.text();
-            const err: any = new Error(
+            const err = new Error(
               `Result fetch failed: ${resultResponse.status} ${text}`
-            );
+            ) as Error & { status: number; body: string };
             err.status = resultResponse.status;
             err.body = text;
             throw err;
@@ -457,11 +451,15 @@ async function pollForVideoCompletion(
         err.promptMode = mode;
         throw err;
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(`[video] Polling attempt ${attempts + 1} failed:`, error);
 
       // Don't retry on 422 - surface immediately for auto-retry logic
-      if (error?.status === 422 || error?.isContentPolicyViolation) {
+      const err = error as {
+        status?: number;
+        isContentPolicyViolation?: boolean;
+      };
+      if (err?.status === 422 || err?.isContentPolicyViolation) {
         throw error;
       }
 

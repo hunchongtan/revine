@@ -3,13 +3,13 @@ import { getVideoByToken } from "@/lib/video-sharing";
 import { VideoViewer } from "@/components/video-viewer";
 
 interface PageProps {
-  params: {
+  params: Promise<{
     token: string;
-  };
+  }>;
 }
 
 export default async function PrivateVideoPage({ params }: PageProps) {
-  const { token } = params;
+  const { token } = await params;
 
   const video = await getVideoByToken(token);
 
@@ -21,7 +21,7 @@ export default async function PrivateVideoPage({ params }: PageProps) {
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { token } = params;
+  const { token } = await params;
   const video = await getVideoByToken(token);
 
   if (!video) {

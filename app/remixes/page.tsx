@@ -48,7 +48,7 @@ export default function MyRemixesPage() {
               No Remixes Yet
             </h2>
             <p className="text-[#8a8a8a] mb-6">
-              You haven't created any Vines yet. Start by choosing a template and creating your first masterpiece!
+              You haven&apos;t created any Vines yet. Start by choosing a template and creating your first masterpiece!
             </p>
             <Button
               asChild

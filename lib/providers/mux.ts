@@ -106,6 +106,10 @@ export async function muxMedia({
     // Read the output file
     const outputData = await ffmpeg.readFile("output.mp4");
 
+    // Convert to Blob for upload (copy to ensure it's a standard ArrayBuffer)
+    const uint8Data = new Uint8Array(outputData as Uint8Array);
+    const blob = new Blob([uint8Data], { type: "video/mp4" });
+
     // Upload to Supabase storage
     const filename = `muxed-${Date.now()}.mp4`;
     const storagePath = `renders/videos/${filename}`;
@@ -113,7 +117,7 @@ export async function muxMedia({
     const uploadResult = await uploadToStorage({
       bucket: "renders",
       path: storagePath,
-      data: outputData,
+      data: blob,
       contentType: "video/mp4",
     });
 

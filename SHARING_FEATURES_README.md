@@ -43,11 +43,13 @@ NEXT_PUBLIC_APP_URL=https://yourdomain.com
 ```
 
 ### 3. Test It!
-1. Generate a video
-2. See the new visibility controls below the video
-3. Toggle between Private/Public
-4. Click "Share This Vine"
-5. Visit the shareable URL
+1. Select a Vine template
+2. Upload your photo
+3. Click "CREATE VINE" and wait 4-5 minutes
+4. See the new visibility controls below the video
+5. Toggle between Private/Public
+6. Click "Share This Vine"
+7. Visit the shareable URL
 
 ---
 

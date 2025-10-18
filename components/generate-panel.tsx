@@ -10,9 +10,10 @@ import { ResultPlayer } from "./result-player"
 import { RetryNotice } from "./retry-notice"
 import { useToast } from "@/hooks/use-toast"
 import type { Template } from "@/lib/templates"
+import type { UnifiedTemplate } from "@/lib/template-adapter"
 
 interface GeneratePanelProps {
-  template: Template
+  template: Template | UnifiedTemplate
 }
 
 export function GeneratePanel({ template }: GeneratePanelProps) {
@@ -26,6 +27,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
   const [errorState, setErrorState] = useState<{
     message: string
     isContentViolation: boolean
+    promptMode?: "strict" | "light"
   } | null>(null)
   const { toast } = useToast()
 
@@ -93,19 +95,21 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
           ? "Your Vine is ready (light mode)" 
           : "Your Vine is ready",
       })
-    } catch (error: any) {
+    } catch (error: unknown) {
       console.error(error)
       
-      // Check if it's a content violation that failed even after auto-retry
-      if (error?.isContentViolation || error?.status === 422) {
+      // Check if it's a content violation
+      const err = error as { isContentViolation?: boolean; status?: number; message?: string };
+      if (err?.isContentViolation || err?.status === 422) {
         setErrorState({
           message: "Generation couldn't complete. Please try again.",
-          isContentViolation: true
+          isContentViolation: true,
+          promptMode: mode
         })
       } else {
         toast({
           title: "Error",
-          description: error.message || "Failed to generate video. Please try again.",
+          description: err.message || "Failed to generate video. Please try again.",
           variant: "destructive",
         })
       }
@@ -115,6 +119,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
   }
 
   const handleRetry = () => {
+    setErrorState(null)
     handleGenerate("light")
   }
 
@@ -125,17 +130,6 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
       a.download = `vine-${template.id}.mp4`
       a.click()
     }
-  }
-
-  const handleCopyCaption = () => {
-    const text = result?.caption?.trim()
-    if (!text) return
-    
-    navigator.clipboard.writeText(text)
-    toast({
-      title: "Copied!",
-      description: "Caption copied to clipboard",
-    })
   }
 
   const handleGenerateAgain = () => {
@@ -151,7 +145,6 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
         caption={result.caption}
         templateId={template.id}
         onDownload={handleDownload}
-        onCopyCaption={handleCopyCaption}
         onGenerateAgain={handleGenerateAgain}
       />
     )
@@ -167,6 +160,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
             message={errorState.message}
             onRetry={handleRetry}
             isRetrying={isGenerating}
+            promptMode={errorState.promptMode}
           />
         )}
 
