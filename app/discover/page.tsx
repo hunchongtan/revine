@@ -13,7 +13,8 @@ async function getPublicVideos(): Promise<VideoRecord[]> {
     return []
   }
 
-  const { data: videos, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: videos, error } = await (supabase as any)
     .from("remixes")
     .select("*")
     .eq("visibility", "public")  // Only public videos
@@ -28,8 +29,8 @@ async function getPublicVideos(): Promise<VideoRecord[]> {
   console.log("[discover] Fetched videos from DB:", videos?.length || 0)
   
   // Remove duplicates by video_url (in case there are duplicate records)
-  const uniqueVideos = videos ? 
-    Array.from(new Map(videos.map(v => [v.video_url, v])).values()) : 
+  const uniqueVideos = (videos as VideoRecord[]) ? 
+    Array.from(new Map((videos as VideoRecord[]).map(v => [v.video_url, v])).values()) : 
     []
 
   console.log("[discover] After deduplication:", uniqueVideos.length)
