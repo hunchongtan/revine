@@ -4,6 +4,7 @@ import { templates } from "@/lib/templates"
 import { TemplateCard } from "@/components/template-card"
 import { YearSelect } from "@/components/year-select"
 import { SearchTemplates } from "@/components/search-templates"
+import { WelcomeModal } from "@/components/welcome-modal"
 import { useSearchParams } from "next/navigation"
 import { useMemo } from "react"
 
@@ -20,8 +21,19 @@ export default function Home() {
     })
   }, [yearParam, searchParam])
 
+  const handleSignInClick = () => {
+    // Trigger click on the user menu icon in the header
+    const userMenuButton = document.querySelector('header button[class*="bg-white/20"]') as HTMLButtonElement
+    if (userMenuButton) {
+      userMenuButton.click()
+    }
+  }
+
   return (
     <main className="min-h-screen bg-[#f3f3f3]">
+      {/* Welcome Modal */}
+      <WelcomeModal onSignInClick={handleSignInClick} />
+
       {/* Filter Bar */}
       <section className="bg-white border-b border-[#e6e6e6] py-4">
         <div className="max-w-6xl mx-auto px-4">

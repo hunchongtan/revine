@@ -44,13 +44,13 @@ export function TemplateCard({ template }: TemplateCardProps) {
       const updated = favourites.filter(id => id !== template.id)
       localStorage.setItem("revine_favourites", JSON.stringify(updated))
       setIsSaved(false)
-      toast.success("Removed from saved")
+      toast.success("Removed from Favorites")
     } else {
       // Add to favourites
       const updated = [...favourites, template.id]
       localStorage.setItem("revine_favourites", JSON.stringify(updated))
       setIsSaved(true)
-      toast.success("Saved to favourites")
+      toast.success("Saved to Favorites")
     }
   }
 
@@ -105,7 +105,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
         <div className="px-3 pb-3 flex items-center gap-4 text-[#8a8a8a] text-xs border-t border-[#e6e6e6] pt-3">
           <button 
             onClick={handleSave}
-            className="flex items-center gap-1 hover:text-[#00B488] transition-colors"
+            className="flex items-center gap-1 hover:text-[#00B488] transition-colors cursor-pointer"
             style={{ color: isSaved ? '#00B488' : undefined }}
           >
             <span>{isSaved ? '⭐' : '☆'}</span>
@@ -113,7 +113,7 @@ export function TemplateCard({ template }: TemplateCardProps) {
           </button>
           <button 
             onClick={handleShare}
-            className="flex items-center gap-1 hover:text-[#00B488] transition-colors"
+            className="flex items-center gap-1 hover:text-[#00B488] transition-colors cursor-pointer"
           >
             <span>🔗</span>
             <span className="font-medium">Share</span>
