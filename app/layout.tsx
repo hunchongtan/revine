@@ -20,17 +20,12 @@ export default function RootLayout({
       <body className="bg-[#f3f3f3]" style={{ fontFamily: 'Helvetica Neue, Helvetica, Arial, sans-serif' }}>
         {/* Vine Teal Header */}
         <header className="bg-[#00bf8f] h-14 flex items-center justify-between px-4 sticky top-0 z-50 shadow-sm">
-          {/* Left: Home icon */}
-          <Link href="/" className="w-10">
-            <svg className="w-6 h-6 text-white hover:opacity-80 transition-opacity" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-          </Link>
+          {/* Left: Empty spacer for balance */}
+          <div className="w-10"></div>
           
           {/* Center: Vine Logo */}
-          <Link href="/" className="flex items-center justify-center gap-2">
-            <Image src="/icon.svg" alt="vine" width={28} height={28} className="brightness-0 invert" />
-            <span className="text-white font-bold text-xl tracking-tight">vine</span>
+          <Link href="/" className="flex items-center justify-center">
+            <Image src="/icon.svg" alt="vine" width={70} height={70} className="brightness-0 invert" />
           </Link>
           
           {/* Right: User icon placeholder */}

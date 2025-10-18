@@ -27,8 +27,7 @@ export function SearchTemplates() {
       placeholder="Search templates..."
       defaultValue={currentSearch}
       onChange={(e) => handleSearch(e.target.value)}
-      className="flex-1 border-0 bg-transparent text-sm focus:outline-none focus:ring-0"
-      style={{ color: "#CCCCCC" }}
+      className="flex-1 border border-[#e6e6e6] bg-white text-sm focus:outline-none focus:ring-2 focus:ring-[#00bf8f] rounded-md px-3"
     />
   )
 }

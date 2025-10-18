@@ -21,8 +21,7 @@ export function YearSelect() {
   return (
     <Select value={currentYear} onValueChange={handleYearChange}>
       <SelectTrigger
-        className="w-32 border-0 bg-transparent text-sm font-medium text-foreground transition-colors"
-        style={{ color: "#00B488" }}
+        className="w-32 border border-[#e6e6e6] bg-white text-sm font-medium text-[#8a8a8a] transition-colors rounded-md px-3"
       >
         <SelectValue />
       </SelectTrigger>

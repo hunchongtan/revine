@@ -4,7 +4,8 @@ import Link from "next/link"
 import Image from "next/image"
 import type { Template } from "@/lib/templates"
 import { useSearchParams } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
+import { toast } from "sonner"
 
 interface TemplateCardProps {
   template: Template
@@ -15,11 +16,55 @@ export function TemplateCard({ template }: TemplateCardProps) {
   const year = searchParams.get("year")
   const search = searchParams.get("search")
   const [isHovering, setIsHovering] = useState(false)
+  const [isSaved, setIsSaved] = useState(false)
 
   const queryString = new URLSearchParams()
   queryString.set("template", template.id)
   if (year) queryString.set("year", year)
   if (search) queryString.set("search", search)
+
+  // Check if template is saved on mount
+  useEffect(() => {
+    const saved = localStorage.getItem("revine_favourites")
+    if (saved) {
+      const favourites = JSON.parse(saved) as string[]
+      setIsSaved(favourites.includes(template.id))
+    }
+  }, [template.id])
+
+  const handleSave = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    const saved = localStorage.getItem("revine_favourites")
+    const favourites = saved ? (JSON.parse(saved) as string[]) : []
+    
+    if (isSaved) {
+      // Remove from favourites
+      const updated = favourites.filter(id => id !== template.id)
+      localStorage.setItem("revine_favourites", JSON.stringify(updated))
+      setIsSaved(false)
+      toast.success("Removed from saved")
+    } else {
+      // Add to favourites
+      const updated = [...favourites, template.id]
+      localStorage.setItem("revine_favourites", JSON.stringify(updated))
+      setIsSaved(true)
+      toast.success("Saved to favourites")
+    }
+  }
+
+  const handleShare = (e: React.MouseEvent) => {
+    e.preventDefault()
+    e.stopPropagation()
+    
+    const url = `${window.location.origin}/generate?template=${template.id}`
+    navigator.clipboard.writeText(url).then(() => {
+      toast.success("Link copied!")
+    }).catch(() => {
+      toast.error("Failed to copy link")
+    })
+  }
 
   return (
     <Link href={`/generate?${queryString.toString()}`}>
@@ -58,16 +103,19 @@ export function TemplateCard({ template }: TemplateCardProps) {
 
         {/* Interaction Bar */}
         <div className="px-3 pb-3 flex items-center gap-4 text-[#8a8a8a] text-xs border-t border-[#e6e6e6] pt-3">
-          <button className="flex items-center gap-1 hover:text-[#00bf8f] transition-colors">
-            <span>👍</span>
-            <span className="font-medium">Like</span>
+          <button 
+            onClick={handleSave}
+            className="flex items-center gap-1 hover:text-[#00B488] transition-colors"
+            style={{ color: isSaved ? '#00B488' : undefined }}
+          >
+            <span>{isSaved ? '⭐' : '☆'}</span>
+            <span className="font-medium">Save</span>
           </button>
-          <button className="flex items-center gap-1 hover:text-[#00bf8f] transition-colors">
-            <span>🔁</span>
-            <span className="font-medium">ReVine</span>
-          </button>
-          <button className="flex items-center gap-1 hover:text-[#00bf8f] transition-colors">
-            <span>↗</span>
+          <button 
+            onClick={handleShare}
+            className="flex items-center gap-1 hover:text-[#00B488] transition-colors"
+          >
+            <span>🔗</span>
             <span className="font-medium">Share</span>
           </button>
         </div>
