@@ -356,8 +356,6 @@ export function Navbar() {
         </div>
       </nav>
 
-      {/* Bottom padding for mobile to prevent content from being hidden behind bottom nav */}
-      <div className="md:hidden h-[60px]" />
 
       {/* Auth Modal for Sign In */}
       <AuthModal open={showAuthModal} onOpenChange={setShowAuthModal} />
