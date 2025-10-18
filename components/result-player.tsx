@@ -24,7 +24,10 @@ export function ResultPlayer({ videoUrl, caption, onDownload, onCopyCaption, onG
     setTimeout(() => setCopied(false), 2000)
   }
 
-  const bust = (url: string) => `${url}${url.includes("?") ? "&" : "?"}r=${refreshSeed}`
+  const bust = (url?: string) => {
+    if (!url) return "";
+    return `${url}${url.includes("?") ? "&" : "?"}r=${refreshSeed}`;
+  }
 
   const handleRefresh = () => {
     setIsRefreshing(true)
@@ -42,13 +45,16 @@ export function ResultPlayer({ videoUrl, caption, onDownload, onCopyCaption, onG
     })
   }
 
+  const hasUrl = Boolean(videoUrl)
+  const src = hasUrl ? bust(videoUrl) : undefined
+
   return (
     <div className="bg-white border border-[#e6e6e6] rounded-[12px] overflow-hidden max-w-md mx-auto shadow-md">
       {/* Video Player */}
       <div className="bg-black" style={{ aspectRatio: "9 / 16" }}>
         <video
-          key={`${videoUrl}-${refreshSeed}`}
-          src={bust(videoUrl)}
+          key={`${videoUrl ?? "no-url"}-${refreshSeed}`}
+          src={src}
           controls
           playsInline
           muted
@@ -90,15 +96,17 @@ export function ResultPlayer({ videoUrl, caption, onDownload, onCopyCaption, onG
           <span className="text-sm font-semibold">{isRefreshing ? "Refreshing..." : "Refresh"}</span>
         </button>
         <button
-          onClick={() => window.open(videoUrl, "_blank")}
-          className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors"
+          onClick={() => hasUrl && window.open(videoUrl, "_blank")}
+          disabled={!hasUrl}
+          className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors disabled:opacity-50"
         >
           <span className="text-lg">🔗</span>
           <span className="text-sm font-semibold">Open</span>
         </button>
         <button 
           onClick={onDownload}
-          className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors"
+          disabled={!hasUrl}
+          className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors disabled:opacity-50"
         >
           <span className="text-lg">⬇</span>
           <span className="text-sm font-semibold">Save</span>

@@ -174,18 +174,22 @@ export async function generateVideo({
       JSON.stringify(result, null, 2)
     );
 
-    // Handle the response - Fal queue endpoints return a request_id for async processing
-    if (result.request_id) {
-      // Poll for completion
+    // Handle the response - prefer immediate video URL if returned
+    if (result?.video?.url) {
+      return {
+        videoUrl: result.video.url,
+        isMock: false,
+      };
+    } else if (result?.data?.video?.url) {
+      return {
+        videoUrl: result.data.video.url,
+        isMock: false,
+      };
+    } else if (result?.request_id) {
+      // Poll for completion only when queued
       const videoUrl = await pollForVideoCompletion(result.request_id, apiKey);
       return {
         videoUrl,
-        isMock: false,
-      };
-    } else if (result.data?.video?.url) {
-      // Direct response with video URL
-      return {
-        videoUrl: result.data.video.url,
         isMock: false,
       };
     } else {
