@@ -303,11 +303,6 @@ export async function generateVideo({
       message?: string;
       body?: string;
     };
-    const isContentViolation =
-      err?.status === 422 ||
-      err?.isContentPolicyViolation ||
-      err?.body?.toLowerCase?.()?.includes("content_policy_violation") ||
-      err?.body?.toLowerCase?.()?.includes("policy");
 
     // Enrich error with prompt mode if not already set
     const enrichedErr = err as { promptMode?: string };
