@@ -527,21 +527,16 @@ Mock data will be used automatically.
 - ✅ Standalone video viewer pages
 - ✅ Native share API integration
 - ✅ Anonymous video creation
+- ✅ Public remixes gallery with discovery
 
 ### Coming Soon
-- 🔄 Public remixes gallery with discovery
 - 🔄 User profile pages
 - 🔄 Video history/library
 - 🔄 Video deletion functionality
 - 🔄 View counter display
 - 🔄 More templates (2017+ memes)
 - 🔄 Custom template creation
-- 🔄 Video analytics dashboard
 
-## 🐛 Known Issues
-
-- Supabase TypeScript types occasionally require `as any` casting due to type inference limitations
-- Some database operations use type assertions to bypass strict TypeScript checks
 
 ## 📄 License
 
@@ -549,11 +544,17 @@ MIT
 
 ## 🙏 Credits
 
+Vibe coded with:
+- [Cursor](https://cursor.com/)
+- [ChatGPT](https://chatgpt.com/)
+- [Claude](https://claude.ai/)
+- [v0](https://v0.dev/)
+- [Manus AI](https://manus.app/)
+
 Built with:
 - [Next.js 15](https://nextjs.org/)
 - [Supabase](https://supabase.com/)
 - [OpenAI](https://openai.com/)
-- [ElevenLabs](https://elevenlabs.io/)
 - [Fal.ai](https://fal.ai/)
 - [shadcn/ui](https://ui.shadcn.com/)
 - [Radix UI](https://www.radix-ui.com/)
@@ -561,4 +562,5 @@ Built with:
 
 ---
 
-Made with 💚 for Vine nostalgia
+Made with 💚 for Vine nostalgia.
+An undertaking of Singapore's biggest hackathon [Cursor Hackathon 2025](https://luma.com/cursor-hack-sg).
