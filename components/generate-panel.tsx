@@ -143,9 +143,9 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
       <SpinnerOverlay isVisible={isGenerating} message={spinnerMessage} />
       <Card className="p-6 space-y-6 bg-white">
         {/* Template Summary */}
-        <div className="p-4 rounded-lg border" style={{ backgroundColor: "#E8F8F3", borderColor: "#D0F0E8" }}>
-          <h3 className="font-bold text-foreground mb-1">{template.name}</h3>
-          <p className="text-sm text-foreground">{template.description}</p>
+        <div className="p-4 rounded-lg border border-[#e6e6e6] bg-white">
+          <h3 className="font-bold text-[#333] mb-1">{template.name}</h3>
+          <p className="text-sm text-[#8a8a8a]">{template.description}</p>
         </div>
 
         {/* Image Upload */}
@@ -161,12 +161,9 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
         <Button
           onClick={handleGenerate}
           disabled={!imageUrl || isGenerating}
-          className="w-full text-white font-bold text-base rounded-full py-3 disabled:opacity-50 transition-colors"
-          style={{ backgroundColor: "#00B488" }}
-          onMouseEnter={(e) => !(!imageUrl || isGenerating) && (e.currentTarget.style.backgroundColor = "#008B6B")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#00B488")}
+          className="w-full bg-[#00bf8f] hover:bg-[#00a77a] text-white font-semibold text-base rounded-full py-3 disabled:opacity-50 transition-colors"
         >
-          CREATE
+          CREATE VINE
         </Button>
       </Card>
     </>

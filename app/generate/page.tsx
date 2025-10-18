@@ -12,16 +12,11 @@ export default function GeneratePage() {
 
   if (!templateId) {
     return (
-      <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#F6F6F6" }}>
+      <main className="min-h-screen flex items-center justify-center bg-[#f3f3f3]">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">No template selected</h1>
+          <h1 className="text-2xl font-bold text-[#333] mb-4">No template selected</h1>
           <Link href="/">
-            <Button
-              className="text-white font-bold rounded-full"
-              style={{ backgroundColor: "#00B488" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#008B6B")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#00B488")}
-            >
+            <Button className="bg-[#00bf8f] hover:bg-[#00a77a] text-white font-semibold rounded-full px-6 py-3 transition-colors">
               Back to Home
             </Button>
           </Link>
@@ -34,16 +29,11 @@ export default function GeneratePage() {
 
   if (!template) {
     return (
-      <main className="min-h-screen flex items-center justify-center" style={{ backgroundColor: "#F6F6F6" }}>
+      <main className="min-h-screen flex items-center justify-center bg-[#f3f3f3]">
         <div className="text-center">
-          <h1 className="text-2xl font-bold text-foreground mb-4">Template not found</h1>
+          <h1 className="text-2xl font-bold text-[#333] mb-4">Template not found</h1>
           <Link href="/">
-            <Button
-              className="text-white font-bold rounded-full"
-              style={{ backgroundColor: "#00B488" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#008B6B")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#00B488")}
-            >
+            <Button className="bg-[#00bf8f] hover:bg-[#00a77a] text-white font-semibold rounded-full px-6 py-3 transition-colors">
               Back to Home
             </Button>
           </Link>
@@ -53,28 +43,9 @@ export default function GeneratePage() {
   }
 
   return (
-    <main className="min-h-screen" style={{ backgroundColor: "#F6F6F6" }}>
-      {/* Header */}
-      <header className="border-b bg-white" style={{ borderColor: "#E8E8E8" }}>
-        <div className="max-w-2xl mx-auto px-4 py-6 flex items-center justify-between">
-          <Link href="/">
-            <Button
-              variant="ghost"
-              className="hover:bg-opacity-50"
-              style={{ color: "#00B488" }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F6F6F6")}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
-            >
-              ← Back
-            </Button>
-          </Link>
-          <h1 className="text-2xl font-bold text-foreground">Create Your Vine</h1>
-          <div className="w-12" />
-        </div>
-      </header>
-
+    <main className="min-h-screen bg-[#f3f3f3]">
       {/* Content */}
-      <section className="max-w-2xl mx-auto px-4 py-12">
+      <section className="max-w-2xl mx-auto px-4 py-8">
         <GeneratePanel template={template} />
       </section>
     </main>

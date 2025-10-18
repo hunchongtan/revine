@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 
 interface ResultPlayerProps {
   videoUrl: string
@@ -23,46 +21,52 @@ export function ResultPlayer({ videoUrl, caption, onDownload, onCopyCaption, onG
   }
 
   return (
-    <Card className="p-6 space-y-4 bg-white">
-      <div className="bg-black rounded-lg overflow-hidden">
-        <video src={videoUrl} controls className="w-full" />
+    <div className="bg-white border border-[#e6e6e6] rounded-[12px] overflow-hidden max-w-md mx-auto shadow-md">
+      {/* Video Player */}
+      <div className="bg-black aspect-square">
+        <video src={videoUrl} controls className="w-full h-full object-cover" loop autoPlay />
       </div>
 
-      <div className="p-4 rounded-lg border" style={{ backgroundColor: "#E8F8F3", borderColor: "#D0F0E8" }}>
-        <p className="text-foreground font-medium">{caption}</p>
+      {/* Caption */}
+      <div className="p-4 border-b border-[#e6e6e6]">
+        <p className="text-sm text-[#333] font-medium">{caption}</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-        <Button
-          onClick={onDownload}
-          className="text-white font-bold rounded-full transition-colors"
-          style={{ backgroundColor: "#00B488" }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#008B6B")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#00B488")}
-        >
-          Download MP4
-        </Button>
-        <Button
+      {/* Vine Interaction Bar */}
+      <div className="p-4 flex items-center justify-between text-[#8a8a8a] border-b border-[#e6e6e6]">
+        <button className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors">
+          <span className="text-lg">👍</span>
+          <span className="text-sm font-semibold">Like</span>
+        </button>
+        <button className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors">
+          <span className="text-lg">🔁</span>
+          <span className="text-sm font-semibold">ReVine</span>
+        </button>
+        <button 
           onClick={handleCopy}
-          variant="outline"
-          className="rounded-full bg-transparent"
-          style={{ borderColor: "#E8E8E8" }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F6F6F6")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+          className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors"
         >
-          {copied ? "Copied!" : "Copy Caption"}
-        </Button>
-        <Button
-          onClick={onGenerateAgain}
-          variant="outline"
-          className="rounded-full bg-transparent"
-          style={{ borderColor: "#E8E8E8" }}
-          onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#F6F6F6")}
-          onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "transparent")}
+          <span className="text-lg">📋</span>
+          <span className="text-sm font-semibold">{copied ? "Copied!" : "Copy"}</span>
+        </button>
+        <button 
+          onClick={onDownload}
+          className="flex items-center gap-2 hover:text-[#00bf8f] transition-colors"
         >
-          Generate Again
-        </Button>
+          <span className="text-lg">⬇</span>
+          <span className="text-sm font-semibold">Save</span>
+        </button>
       </div>
-    </Card>
+
+      {/* Actions */}
+      <div className="p-4">
+        <button
+          onClick={onGenerateAgain}
+          className="w-full bg-[#00bf8f] hover:bg-[#00a77a] text-white font-semibold rounded-full py-3 transition-colors"
+        >
+          Create Another Vine
+        </button>
+      </div>
+    </div>
   )
 }

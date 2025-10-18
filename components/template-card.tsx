@@ -2,8 +2,6 @@
 
 import Link from "next/link"
 import Image from "next/image"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import type { Template } from "@/lib/templates"
 import { useSearchParams } from "next/navigation"
 import { useState } from "react"
@@ -25,39 +23,55 @@ export function TemplateCard({ template }: TemplateCardProps) {
 
   return (
     <Link href={`/generate?${queryString.toString()}`}>
-      <Card
-        className="overflow-hidden cursor-pointer h-full flex flex-col bg-white transition-all duration-300"
+      <div
+        className="bg-white border border-[#e6e6e6] rounded-[12px] overflow-hidden cursor-pointer transition-all duration-200 hover:shadow-md"
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
         style={{
-          animation: isHovering ? "jitter 0.3s ease-in-out, shadow-pulse 0.6s ease-in-out" : "none",
-          boxShadow: isHovering ? "0 8px 12px rgba(0, 180, 136, 0.2)" : "0 4px 6px rgba(0, 0, 0, 0.1)",
+          transform: isHovering ? 'scale(1.02)' : 'scale(1)',
         }}
       >
-        <div className="relative w-full h-48" style={{ backgroundColor: "#F0F0F0" }}>
-          <Image src={template.thumbnail || "/placeholder.svg"} alt={template.name} fill className="object-cover" />
-          <div
-            className="absolute top-3 right-3 text-white text-xs font-bold px-3 py-1 rounded-full"
-            style={{ backgroundColor: "#00B488" }}
-          >
+        {/* Video Thumbnail */}
+        <div className="relative w-full aspect-square bg-[#f0f0f0]">
+          <Image 
+            src={template.thumbnail || "/placeholder.svg"} 
+            alt={template.name} 
+            fill 
+            className="object-cover" 
+          />
+          
+          {/* Year Badge - Top Right */}
+          <div className="absolute top-2 right-2 bg-[#00bf8f] text-white text-xs font-semibold px-2 py-1 rounded">
             {template.year}
           </div>
         </div>
-        <div className="p-4 flex flex-col flex-1">
-          <h3 className="font-bold text-lg text-foreground mb-1">{template.name}</h3>
-          <p className="text-sm mb-4 flex-1" style={{ color: "#999999" }}>
+
+        {/* Caption Area */}
+        <div className="p-3">
+          <p className="font-semibold text-sm text-[#333] mb-1">
+            {template.name}
+          </p>
+          <p className="text-xs text-[#8a8a8a] line-clamp-2">
             {template.description}
           </p>
-          <Button
-            className="w-full text-white font-bold text-sm rounded-full py-2 transition-colors"
-            style={{ backgroundColor: "#00B488" }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#008B6B")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#00B488")}
-          >
-            CREATE
-          </Button>
         </div>
-      </Card>
+
+        {/* Interaction Bar */}
+        <div className="px-3 pb-3 flex items-center gap-4 text-[#8a8a8a] text-xs border-t border-[#e6e6e6] pt-3">
+          <button className="flex items-center gap-1 hover:text-[#00bf8f] transition-colors">
+            <span>👍</span>
+            <span className="font-medium">Like</span>
+          </button>
+          <button className="flex items-center gap-1 hover:text-[#00bf8f] transition-colors">
+            <span>🔁</span>
+            <span className="font-medium">ReVine</span>
+          </button>
+          <button className="flex items-center gap-1 hover:text-[#00bf8f] transition-colors">
+            <span>↗</span>
+            <span className="font-medium">Share</span>
+          </button>
+        </div>
+      </div>
     </Link>
   )
 }
