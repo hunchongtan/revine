@@ -11,31 +11,61 @@ export type Template = Database["public"]["Tables"]["templates"]["Row"] & {
 export async function fetchTemplates(
   userId?: string | null
 ): Promise<Template[]> {
+  console.log("[Templates] fetchTemplates called, userId:", userId);
+
   const supabase = getSupabaseAuthClient();
   if (!supabase) {
+    console.error(
+      "[Templates] ❌ Supabase client is null - check environment variables!"
+    );
     return [];
   }
 
+  console.log("[Templates] ✓ Supabase client created");
+
   try {
     // Fetch templates
+    console.log("[Templates] Fetching templates from database...");
     const { data: templates, error } = await supabase
       .from("templates")
       .select("*")
       .order("year", { ascending: true });
 
     if (error) {
-      console.error("Error fetching templates:", error);
+      console.error("[Templates] ❌ Error fetching templates:", error);
+      console.error("[Templates] Error details:", {
+        message: error.message,
+        code: error.code,
+        details: error.details,
+        hint: error.hint,
+      });
       return [];
+    }
+
+    console.log(
+      "[Templates] ✓ Successfully fetched templates:",
+      templates?.length || 0
+    );
+
+    if (!templates || templates.length === 0) {
+      console.warn(
+        "[Templates] ⚠️ Database returned 0 templates! Did you run the seed migration?"
+      );
+      console.warn(
+        "[Templates] Run this in Supabase SQL Editor: supabase/migrations/002_seed_templates.sql"
+      );
     }
 
     // If user is logged in, fetch their favourites
     if (userId) {
+      console.log("[Templates] Fetching favourites for user:", userId);
       const { data: favourites } = await supabase
         .from("favourites")
         .select("template_id")
         .eq("user_id", userId);
 
       const favouriteIds = new Set(favourites?.map((f) => f.template_id) || []);
+      console.log("[Templates] User has", favouriteIds.size, "favourites");
 
       return templates.map((template) => ({
         ...template,
@@ -43,9 +73,9 @@ export async function fetchTemplates(
       }));
     }
 
-    return templates;
+    return templates || [];
   } catch (error) {
-    console.error("Failed to fetch templates:", error);
+    console.error("[Templates] ❌ Failed to fetch templates:", error);
     return [];
   }
 }

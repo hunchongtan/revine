@@ -4,7 +4,7 @@ import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { UploadFace } from "./upload-face"
-import { VoiceSelect } from "./voice-select"
+// Removed ElevenLabs voice selection
 import { SpinnerOverlay } from "./spinner-overlay"
 import { ResultPlayer } from "./result-player"
 import { useToast } from "@/hooks/use-toast"
@@ -16,7 +16,6 @@ interface GeneratePanelProps {
 
 export function GeneratePanel({ template }: GeneratePanelProps) {
   const [imageUrl, setImageUrl] = useState<string>("")
-  const [voice, setVoice] = useState<string>(template.defaultVoice)
   const [isGenerating, setIsGenerating] = useState(false)
   const [spinnerMessage, setSpinnerMessage] = useState<string | undefined>(undefined)
   const [result, setResult] = useState<{
@@ -59,31 +58,36 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
       })
       const { caption } = await captionRes.json()
 
-      // Step 2: Generate TTS
-      const ttsRes = await fetch("/api/tts", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ script: template.audioScript, voice, templateId: template.id }),
-      })
-      const { audioUrl } = await ttsRes.json()
+      // Resolve absolute thumbnail URL for reference image 1
+      const firstRef = (() => {
+        const t = template.thumbnail
+        if (!t) return undefined
+        if (t.startsWith("http")) return t
+        try {
+          return new URL(t, window.location.origin).href
+        } catch {
+          return undefined
+        }
+      })()
+      const isLocalhost = (u?: string) => {
+        if (!u) return true
+        try {
+          const h = new URL(u).hostname
+          return h === "localhost" || h === "127.0.0.1"
+        } catch {
+          return true
+        }
+      }
 
-      // Step 3: Generate video
+      // Step 2: Generate video (reference-to-video with thumbnail + user image)
       const videoRes = await fetch("/api/video", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ templateId: template.id, imageUrl }),
+        body: JSON.stringify({ templateId: template.id, imageUrl, referenceThumbnail: isLocalhost(firstRef) ? undefined : firstRef }),
       })
       const { videoUrl } = await videoRes.json()
 
-      // Step 4: Mux audio and video
-      const muxRes = await fetch("/api/mux", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ audioUrl, videoUrl, delayMs: 300 }),
-      })
-      const { finalUrl } = await muxRes.json()
-
-      setResult({ caption, videoUrl: finalUrl })
+      setResult({ caption, videoUrl })
       toast({
         title: "Success!",
         description: "Your Vine is ready",
@@ -123,7 +127,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
   const handleGenerateAgain = () => {
     setResult(null)
     setImageUrl("")
-    setVoice(template.defaultVoice)
+    // voice selection removed (we no longer use ElevenLabs)
   }
 
   if (result) {
@@ -150,12 +154,11 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
 
         {/* Image Upload */}
         <div>
-          <label className="text-sm font-medium text-foreground block mb-2">Upload Image</label>
+          <label className="text-sm font-medium text-foreground block mb-2">Upload Your Photo</label>
           <UploadFace onImageSelect={setImageUrl} preview={imageUrl} />
         </div>
 
-        {/* Voice Select */}
-        <VoiceSelect value={voice} onValueChange={setVoice} />
+        {/* Voice Select removed (using model audio) */}
 
         {/* Generate Button */}
         <Button

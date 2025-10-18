@@ -59,24 +59,39 @@ export async function muxMedia({
     await ffmpeg.writeFile("input_video.mp4", videoData);
     await ffmpeg.writeFile("input_audio.mp3", audioData);
 
-    // Build FFmpeg command for muxing
-    // -c:v copy: copy video stream without re-encoding (faster)
-    // -c:a aac: encode audio to AAC for better compatibility
-    // -shortest: end when shortest stream ends
-    // -avoid_negative_ts make_zero: handle timestamp issues
+    // Normalize audio to -14 LUFS, resample to 48kHz, pad/trim to 8s, then mux
+    // Steps:
+    // 1) Filter audio: asetnsamples ensures proper frame sizing, loudnorm targets -14 LUFS, resample to 48k
+    // 2) Pad/trim to 8 seconds for Vine timing
+    // 3) Copy video, encode audio AAC, faststart for web playback, stop at shortest
     const command = [
       "-i",
       "input_video.mp4",
       "-i",
       "input_audio.mp3",
+      // Audio filter chain
+      "-af",
+      "loudnorm=I=-14:TP=-1.5:LRA=11,aresample=48000,apad=pad_dur=8,atrim=0:8",
+      // Map streams
+      "-map",
+      "0:v:0",
+      "-map",
+      "1:a:0",
+      // Codecs
       "-c:v",
       "copy",
       "-c:a",
       "aac",
+      // Web faststart
+      "-movflags",
+      "+faststart",
+      // End when shortest stream ends
       "-shortest",
+      // Timestamp handling
       "-avoid_negative_ts",
       "make_zero",
-      "-y", // overwrite output file
+      // Overwrite output
+      "-y",
       "output.mp4",
     ];
 

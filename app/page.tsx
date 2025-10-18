@@ -22,13 +22,17 @@ export default function Home() {
 
   useEffect(() => {
     async function loadTemplates() {
+      console.log("[HomePage] Loading templates...");
       try {
         const data = await fetchTemplates(user?.id)
+        console.log("[HomePage] ✓ Received templates:", data.length);
+        console.log("[HomePage] Template data:", data);
         setTemplates(data)
       } catch (error) {
-        console.error("Failed to load templates:", error)
+        console.error("[HomePage] ❌ Failed to load templates:", error)
       } finally {
         setLoading(false)
+        console.log("[HomePage] Loading complete");
       }
     }
     loadTemplates()

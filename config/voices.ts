@@ -18,7 +18,7 @@ export const voices: Voice[] = [
 
   // SPORTS ANNOUNCER voices (hyped, confident, energetic)
   { id: "IKne3meq5aSn9XLyUdCD", label: "Sports Announcer (Charlie - Hyped)" },
-  { id: "TX3LPaxmHKxFdv7VOQHJ", label: "Sports Announcer (Liam - Confident)" },
+  { id: "bIHbv24MWmeRgasZH58o", label: "Sports Announcer (Will - Energetic)" },
   { id: "pFZP5JQG7iQjIQuC4Bku", label: "Sports Announcer (Lily - Confident)" },
 ];
 

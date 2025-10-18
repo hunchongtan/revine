@@ -23,7 +23,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "narration",
     audioScript: "He ain't gonna do it… He did it. He did it for the Vine!",
-    videoPrompt: "6s backyard; hesitate→cut→tiny stunt→celebrate.",
+    videoPrompt:
+      'Recreate the Vine called "Do It For The Vine". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "triumphant one-liner ≤10 words + #VineEnergy",
   },
@@ -36,7 +37,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "narration",
     audioScript: "He refuses the spoon… again.",
-    videoPrompt: "6s close-up spoon vs face, comedic refusal, quick cuts.",
+    videoPrompt:
+      'Recreate the Vine called "Won\'t Eat His Cereal". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "funny breakfast moment ≤8 words",
   },
@@ -50,7 +52,7 @@ export const templates: Template[] = [
     delivery: "full_line",
     audioScript: "AAAHHH!",
     videoPrompt:
-      "6s toy ducks squeeze → explosion of quacks, chaotic handheld.",
+      'Recreate the Vine called "Duck Army Scream". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "chaotic energy ≤5 words",
   },
@@ -64,7 +66,8 @@ export const templates: Template[] = [
     defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "I'm in me mum's car. Vroom vroom.",
-    videoPrompt: "6s car interior, forward lean, tiny steering motions.",
+    videoPrompt:
+      "Recreate the Vine called \"I'm in me mum's car\". Neutral, non-identifying, family-friendly.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "cheeky car moment ≤8 words",
   },
@@ -77,7 +80,8 @@ export const templates: Template[] = [
     defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Look at all those chickens.",
-    videoPrompt: "6s park shot, arm sweep to birds, slight zoom.",
+    videoPrompt:
+      'Recreate the Vine called "Look at all those chickens". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "nature observation ≤6 words",
   },
@@ -90,7 +94,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Hurricane Katrina… more like Hurricane Tortilla",
-    videoPrompt: "6s kitchen flip with tortilla, pun on cut.",
+    videoPrompt:
+      'Recreate the Vine called "Hurricane Tortilla". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "food pun ≤8 words",
   },
@@ -103,7 +108,8 @@ export const templates: Template[] = [
     defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "Stop! I could've dropped my croissant!",
-    videoPrompt: "6s hallway, near-drop, startled yelp, quick tilt.",
+    videoPrompt:
+      'Recreate the Vine called "Stop! I could\'ve dropped my croissant". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "dramatic food moment ≤8 words",
   },
@@ -116,7 +122,8 @@ export const templates: Template[] = [
     defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Eyebrows on fleek.",
-    videoPrompt: "6s selfie cam, brow pose, sparkle overlay.",
+    videoPrompt:
+      'Recreate the Vine called "Eyebrows on fleek". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "beauty flex ≤4 words",
   },
@@ -129,7 +136,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "That was legitness!",
-    videoPrompt: "6s skate/scooter mini trick → reaction cut.",
+    videoPrompt:
+      'Recreate the Vine called "That was legitness". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "trick moment ≤4 words",
   },
@@ -143,7 +151,8 @@ export const templates: Template[] = [
     defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Why you always lyin'… hmm? Why you always lyin'!",
-    videoPrompt: "6s outdoor; sassy lip-sync; dolly; eyebrow raise.",
+    videoPrompt:
+      'Recreate the Vine called "Why You Lying?". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1, 3.5, 5.5, 6],
     captionPrompt: "cheeky call-out + 1 short hashtag",
   },
@@ -156,7 +165,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Deez Nuts, ha! got eem!",
-    videoPrompt: "6s phone prank vibe, triumphant zoom on punchline.",
+    videoPrompt:
+      'Recreate the Vine called "Deez Nuts, ha! got eem". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "prank victory ≤6 words",
   },
@@ -170,7 +180,7 @@ export const templates: Template[] = [
     delivery: "full_line",
     audioScript: "WHAT ARE THOOOOOSE?!",
     videoPrompt:
-      "6s handheld POV; point to shoes; dramatic zoom; 2015 phone grain.",
+      'Recreate the Vine called "What Are Those?". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3.2, 5, 6],
     captionPrompt: "1-line nostalgic roast + ≤2 short hashtags",
   },
@@ -183,7 +193,8 @@ export const templates: Template[] = [
     defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "It's Wednesday, my dudes! AAAHHHHH!",
-    videoPrompt: "6s bathroom selfie, goggles, scream hold.",
+    videoPrompt:
+      'Recreate the Vine called "It\'s Wednesday, my dudes". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "weekly announcement ≤5 words",
   },
@@ -196,7 +207,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Two bros chillin' in a hot tub, 'cause they're not gay.",
-    videoPrompt: "6s wide shot, two seats apart, relaxed shrug.",
+    videoPrompt:
+      'Recreate the Vine called "Two bros chillin\' in a hot tub". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "chill moment ≤8 words",
   },
@@ -209,7 +221,8 @@ export const templates: Template[] = [
     defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "Miss Keisha?! She dead!",
-    videoPrompt: "6s overacted shake + comedic collapse reaction.",
+    videoPrompt:
+      'Recreate the Vine called "Miss Keisha?! She dead". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "shocked reaction ≤5 words",
   },
@@ -222,7 +235,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "So, no head?",
-    videoPrompt: "6s deadpan ask → instant smash cut (phone smack implied).",
+    videoPrompt:
+      'Recreate the Vine called "So, no head?". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "absurd question ≤4 words",
   },
@@ -235,7 +249,8 @@ export const templates: Template[] = [
     defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "A potato flew around my room",
-    videoPrompt: "6s slow pan, floating potato gag, airy vibe.",
+    videoPrompt:
+      'Recreate the Vine called "A potato flew around my room". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "surreal moment ≤6 words",
   },
@@ -248,7 +263,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Iridocyclitis.",
-    videoPrompt: "6s spelling-bee podium style, zoom on mouth.",
+    videoPrompt:
+      'Recreate the Vine called "Iridocyclitis." Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "word moment ≤2 words",
   },
@@ -262,7 +278,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Hi, welcome to Chili's!",
-    videoPrompt: "6s doorway pose, quick bow, jump cut to grin.",
+    videoPrompt:
+      'Recreate the Vine called "Hi, welcome to Chili\'s". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "restaurant greeting ≤5 words",
   },
@@ -275,7 +292,8 @@ export const templates: Template[] = [
     defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Road work ahead? Uh, yeah, I sure hope it does.",
-    videoPrompt: "6s car POV, sign reveal → quip, slight shake.",
+    videoPrompt:
+      'Recreate the Vine called "Road work ahead? Uh, yeah, I sure hope it does". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "road sign joke ≤8 words",
   },
@@ -288,7 +306,8 @@ export const templates: Template[] = [
     defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "LeBROOOON JAAAAMES!",
-    videoPrompt: "6s living room; whip-pan; zoom on shout; VHS edge.",
+    videoPrompt:
+      'Recreate the Vine called "LeBROOOON JAAAAMES!". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1, 2.5, 3, 5, 6],
     captionPrompt: "playful sports meme ≤12 words + 1 hashtag",
   },
@@ -301,7 +320,8 @@ export const templates: Template[] = [
     defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Free shavacadoo!",
-    videoPrompt: "6s storefront sign misread, tight zoom on letters.",
+    videoPrompt:
+      'Recreate the Vine called "Free shavacadoo". Neutral, non-identifying, family-friendly.',
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "sign misread ≤4 words",
   },

@@ -18,7 +18,8 @@ const parsedEnv = envSchema.parse({
   NODE_ENV: process.env.NODE_ENV,
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
-  FAL_API_KEY: process.env.FAL_API_KEY,
+  // Support both FAL_API_KEY and FAL_KEY (for MCP compatibility)
+  FAL_API_KEY: process.env.FAL_API_KEY || process.env.FAL_KEY,
   // Allow either NEXT_PUBLIC_* or unprefixed for compatibility
   SUPABASE_URL:
     process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,

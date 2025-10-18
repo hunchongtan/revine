@@ -125,7 +125,7 @@ export function UploadFace({ onImageSelect, preview }: UploadFaceProps) {
       {preview ? (
         <div className="space-y-4">
           <div className="relative w-full h-48 rounded-lg overflow-hidden" style={{ backgroundColor: "#F0F0F0" }}>
-            <Image src={preview || "/placeholder.svg"} alt="Preview" fill className="object-cover" />
+            <Image src={preview || "/placeholder.svg"} alt="Preview" fill sizes="(max-width: 768px) 100vw, 600px" className="object-cover" />
           </div>
           <label className="block">
             <input 
@@ -155,9 +155,9 @@ export function UploadFace({ onImageSelect, preview }: UploadFaceProps) {
             disabled={isNormalizing}
           />
           <div className="text-center py-8">
-            <p className="text-foreground font-medium mb-2">Upload your image</p>
+            <p className="text-foreground font-medium mb-2">Upload your face</p>
             <p className="text-sm" style={{ color: "#999999" }}>
-              Drag and drop or click to select
+              Drag and drop your photo or click to select
             </p>
           </div>
         </label>
