@@ -76,7 +76,7 @@ export default function Home() {
       <WelcomeModal onSignInClick={handleSignInClick} />
 
       {/* Filter Bar */}
-      <section className="bg-white border-b border-[#e6e6e6] py-4">
+      <section className="bg-white border-b border-[#e6e6e6] py-2 md:py-4">
         <div className="max-w-6xl mx-auto px-4">
           <div className="flex gap-3 items-center">
             <YearSelect />
