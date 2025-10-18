@@ -21,6 +21,7 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
   const [loadError, setLoadError] = useState<string | null>(null)
   const [visibility, setVisibility] = useState<VideoVisibility>("private")
   const [shareUrl, setShareUrl] = useState<string>("")
+  const [savedVideoId, setSavedVideoId] = useState<string | undefined>(videoId)
   const [isSharing, setIsSharing] = useState(false)
   const [isChangingVisibility, setIsChangingVisibility] = useState(false)
   const videoRef = useRef<HTMLVideoElement | null>(null)
@@ -50,7 +51,15 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
   // Create video record on mount if videoId doesn't exist
   useEffect(() => {
     const createVideo = async () => {
-      if (!videoId && videoUrl && templateId) {
+      console.log("[ResultPlayer] Create video check:", {
+        savedVideoId,
+        videoUrl: videoUrl?.substring(0, 50),
+        templateId,
+        shouldCreate: !savedVideoId && videoUrl && templateId
+      });
+
+      if (!savedVideoId && videoUrl && templateId) {
+        console.log("[ResultPlayer] Creating video record...");
         try {
           const res = await fetch("/api/videos/create", {
             method: "POST",
@@ -63,23 +72,40 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
             }),
           });
 
+          console.log("[ResultPlayer] Create response status:", res.status);
+
           if (res.ok) {
             const data = await res.json();
+            console.log("[ResultPlayer] Video created successfully:", {
+              videoId: data.video?.id,
+              shareUrl: data.shareUrl
+            });
+            setSavedVideoId(data.video.id);
             setShareUrl(data.shareUrl);
             // Optionally redirect to the video page
             // window.location.href = data.shareUrl;
+          } else {
+            const error = await res.json();
+            console.error("[ResultPlayer] Failed to create video:", error);
           }
         } catch (error) {
-          console.error("Failed to create video record:", error);
+          console.error("[ResultPlayer] Create video error:", error);
         }
       }
     };
 
     createVideo();
-  }, [videoId, videoUrl, templateId, caption]);
+  }, [savedVideoId, videoUrl, templateId, caption]);
 
   const handleVisibilityToggle = async () => {
-    if (!videoId) {
+    console.log("[ResultPlayer] Visibility toggle clicked!", {
+      savedVideoId,
+      currentVisibility: visibility,
+      hasVideoId: !!savedVideoId
+    });
+
+    if (!savedVideoId) {
+      console.error("[ResultPlayer] No savedVideoId - video not saved yet");
       toast({
         title: "Error",
         description: "Video not saved yet",
@@ -90,16 +116,23 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
 
     setIsChangingVisibility(true);
     const newVisibility: VideoVisibility = visibility === "private" ? "public" : "private";
+    console.log("[ResultPlayer] Changing visibility from", visibility, "to", newVisibility);
 
     try {
-      const res = await fetch(`/api/videos/${videoId}/visibility`, {
+      const url = `/api/videos/${savedVideoId}/visibility`;
+      console.log("[ResultPlayer] Calling API:", url);
+      
+      const res = await fetch(url, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ visibility: newVisibility }),
       });
 
+      console.log("[ResultPlayer] Visibility API response:", res.status, res.statusText);
+
       if (res.ok) {
         const data = await res.json();
+        console.log("[ResultPlayer] Visibility changed successfully:", data);
         setVisibility(newVisibility);
         setShareUrl(data.shareUrl);
         toast({
@@ -107,13 +140,15 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
           description: `Video is now ${newVisibility}`,
         });
       } else {
-        throw new Error("Failed to update visibility");
+        const errorData = await res.json();
+        console.error("[ResultPlayer] API error response:", errorData);
+        throw new Error(errorData.error || "Failed to update visibility");
       }
     } catch (error) {
-      console.error("Failed to update visibility:", error);
+      console.error("[ResultPlayer] Visibility toggle error:", error);
       toast({
         title: "Error",
-        description: "Failed to update visibility",
+        description: error instanceof Error ? error.message : "Failed to update visibility",
         variant: "destructive",
       });
     } finally {
@@ -249,7 +284,7 @@ export function ResultPlayer({ videoUrl, caption, videoId, templateId, onDownloa
           </div>
           <button
             onClick={handleVisibilityToggle}
-            disabled={isChangingVisibility || !videoId}
+            disabled={isChangingVisibility || !savedVideoId}
             className="px-4 py-2 text-xs font-semibold text-[#00bf8f] hover:bg-[#00bf8f] hover:text-white border border-[#00bf8f] rounded-full transition-colors disabled:opacity-50"
           >
             {isChangingVisibility ? "Updating..." : "Change"}
