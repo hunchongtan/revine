@@ -97,14 +97,24 @@ function buildPromptStrict(template: Template, beatsCSV: string): string {
  * Baseline instructions only.
  */
 function buildPromptLight(template: Template, beatsCSV: string): string {
+  const sanitizeText = (t: string) =>
+    t
+      .replace(/\b(sassy|call[- ]?out)\b/gi, "playful")
+      .replace(/\b(why you always lyin')\b/gi, "the line")
+      .trim();
+
+  const vineName = template.name || "classic Vine";
   const scene = template.sceneDescription
     ? ` ${template.sceneDescription}.`
     : "";
+  const perf = sanitizeText(template.audioScript);
+
   return [
-    "Create a short video animation.",
+    `Recreate the Vine "${vineName}". Family-friendly.`,
     `${scene}`,
     "Use first image for scene background, second image for person.",
     `Timing: ${beatsCSV} seconds.`,
+    `Performance: ${perf}`,
     "Natural movement, expressive.",
   ]
     .filter(Boolean)
