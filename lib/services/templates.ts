@@ -11,23 +11,27 @@ export type Template = Database["public"]["Tables"]["templates"]["Row"] & {
 export async function fetchTemplates(
   userId?: string | null
 ): Promise<Template[]> {
+  console.log("🔍 [fetchTemplates] Getting Supabase client...");
   const supabase = getSupabaseAuthClient();
   if (!supabase) {
-    console.warn("Supabase client not available, returning empty templates");
+    console.warn("❌ [fetchTemplates] Supabase client not available, returning empty templates");
     return [];
   }
+  console.log("✅ [fetchTemplates] Supabase client initialized");
 
   try {
     // Fetch templates
+    console.log("🔍 [fetchTemplates] Querying templates table...");
     const { data: templates, error } = await supabase
       .from("templates")
       .select("*")
       .order("year", { ascending: true });
 
     if (error) {
-      console.error("Error fetching templates:", error);
+      console.error("❌ [fetchTemplates] Error fetching templates:", error);
       return [];
     }
+    console.log("✅ [fetchTemplates] Query successful, found", templates?.length || 0, "templates");
 
     // If user is logged in, fetch their favourites
     if (userId) {

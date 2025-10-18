@@ -34,9 +34,21 @@ Required keys:
 - `OPENAI_API_KEY` - For caption generation
 - `ELEVENLABS_API_KEY` - For text-to-speech (9 voices configured)
 - `FAL_API_KEY` - For video generation (Sora-2 model)
-- `SUPABASE_URL` - For storage
-- `SUPABASE_ANON_KEY` - For client-side storage access
+- `SUPABASE_URL` - For storage (server-side)
+- `SUPABASE_ANON_KEY` - For client-side storage access (server or public)
 - `SUPABASE_SERVICE_ROLE_KEY` - For server-side storage uploads
+
+Client-side Supabase variables can also be provided with public prefixes. Either naming works:
+
+```bash
+# Option A: Public-prefixed (recommended for Next.js client usage)
+NEXT_PUBLIC_SUPABASE_URL=...
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+
+# Option B: Unprefixed (also supported)
+SUPABASE_URL=...
+SUPABASE_ANON_KEY=...
+```
 
 ### Supabase Setup
 

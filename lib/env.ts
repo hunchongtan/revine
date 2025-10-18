@@ -19,8 +19,11 @@ const parsedEnv = envSchema.parse({
   OPENAI_API_KEY: process.env.OPENAI_API_KEY,
   ELEVENLABS_API_KEY: process.env.ELEVENLABS_API_KEY,
   FAL_API_KEY: process.env.FAL_API_KEY,
-  SUPABASE_URL: process.env.SUPABASE_URL,
-  SUPABASE_ANON_KEY: process.env.SUPABASE_ANON_KEY,
+  // Allow either NEXT_PUBLIC_* or unprefixed for compatibility
+  SUPABASE_URL:
+    process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.SUPABASE_URL,
+  SUPABASE_ANON_KEY:
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY,
   SUPABASE_SERVICE_ROLE_KEY: process.env.SUPABASE_SERVICE_ROLE_KEY,
 });
 

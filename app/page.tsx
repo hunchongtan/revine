@@ -1,24 +1,63 @@
 "use client"
 
-import { templates } from "@/lib/templates"
 import { TemplateCard } from "@/components/template-card"
 import { YearSelect } from "@/components/year-select"
 import { SearchTemplates } from "@/components/search-templates"
 import { useSearchParams } from "next/navigation"
-import { useMemo } from "react"
+import { useMemo, useEffect, useState } from "react"
+import { fetchTemplates, getTemplateThumbnailUrl } from "@/lib/services/templates"
+import { adaptNewTemplate } from "@/lib/template-adapter"
+import { useAuth } from "@/lib/hooks/use-auth"
+import type { Template } from "@/lib/services/templates"
 
 export default function Home() {
   const searchParams = useSearchParams()
   const yearParam = searchParams.get("year")
   const searchParam = searchParams.get("search")?.toLowerCase() || ""
+  const { user } = useAuth()
+  
+  const [templates, setTemplates] = useState<Template[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadTemplates() {
+      try {
+        console.log("🔍 [HomePage] Fetching templates from Supabase...")
+        const data = await fetchTemplates(user?.id)
+        console.log("✅ [HomePage] Fetched templates:", data.length, "templates")
+        setTemplates(data)
+      } catch (error) {
+        console.error("❌ [HomePage] Failed to load templates:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    loadTemplates()
+  }, [user?.id])
 
   const filteredTemplates = useMemo(() => {
-    return templates.filter((template) => {
+    return templates.map(t => {
+      const adapted = adaptNewTemplate(t)
+      // Get the proper Supabase Storage URL for the thumbnail
+      adapted.thumbnail = getTemplateThumbnailUrl(t.thumbnail_url)
+      return adapted
+    }).filter((template) => {
       const matchesYear = !yearParam || template.year.toString() === yearParam
       const matchesSearch = !searchParam || template.name.toLowerCase().includes(searchParam)
       return matchesYear && matchesSearch
     })
-  }, [yearParam, searchParam])
+  }, [templates, yearParam, searchParam])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#f3f3f3]">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#00bf8f] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[#8a8a8a] text-lg">Loading templates...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <main className="min-h-screen bg-[#f3f3f3]">
