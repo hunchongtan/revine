@@ -51,7 +51,7 @@ export function ResultPlayer({ videoUrl, caption, onDownload, onCopyCaption, onG
   return (
     <div className="bg-white border border-[#e6e6e6] rounded-[12px] overflow-hidden max-w-md mx-auto shadow-md">
       {/* Video Player */}
-      <div className="bg-black" style={{ aspectRatio: "9 / 16" }}>
+      <div className="bg-black flex items-center justify-center" style={{ height: "400px" }}>
         <video
           key={`${videoUrl ?? "no-url"}-${refreshSeed}`}
           src={src}
@@ -66,7 +66,8 @@ export function ResultPlayer({ videoUrl, caption, onDownload, onCopyCaption, onG
             setIsRefreshing(false)
             setLoadError("Still processing or unavailable. Please try again shortly.")
           }}
-          className="w-full h-full object-contain"
+          className="h-full object-contain"
+          style={{ maxWidth: "100%" }}
         />
       </div>
 
@@ -86,7 +87,7 @@ export function ResultPlayer({ videoUrl, caption, onDownload, onCopyCaption, onG
       </div>
 
       {/* Actions Bar */}
-      <div className="p-4 flex items-center justify-end gap-4 text-[#8a8a8a] border-b border-[#e6e6e6]">
+      <div className="p-4 flex items-center justify-center gap-4 text-[#8a8a8a] border-b border-[#e6e6e6]">
         <button
           onClick={handleRefresh}
           disabled={isRefreshing}

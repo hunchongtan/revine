@@ -8,7 +8,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     console.log("[video-api] Request body:", JSON.stringify(body, null, 2));
 
-    const { templateId, imageUrl, referenceThumbnail } = body;
+    const { templateId, imageUrl, referenceThumbnail, mode } = body;
 
     if (!templateId || !imageUrl) {
       console.error("[video-api] Missing required parameters:", {
@@ -23,10 +23,11 @@ export async function POST(request: Request) {
 
     console.log("[video-api] Calling generateVideo...");
     try {
-      const { videoUrl } = await generateVideo({
+      const { videoUrl, promptMode } = await generateVideo({
         templateId,
         imageUrl,
         referenceThumbnail,
+        mode,
       });
       console.log("[video-api] ✅ Video generated successfully:", videoUrl);
 
