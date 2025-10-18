@@ -102,7 +102,7 @@ export interface Database {
       remixes: {
         Row: {
           id: string;
-          user_id: string;
+          user_id: string | null;
           template_id: string | null;
           video_url: string;
           caption: string | null;
@@ -116,7 +116,7 @@ export interface Database {
         };
         Insert: {
           id?: string;
-          user_id: string;
+          user_id?: string | null;
           template_id?: string | null;
           video_url: string;
           caption?: string | null;
@@ -130,7 +130,7 @@ export interface Database {
         };
         Update: {
           id?: string;
-          user_id?: string;
+          user_id?: string | null;
           template_id?: string | null;
           video_url?: string;
           caption?: string | null;

@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
     // Get user ID from request headers if available (optional - allows anonymous)
     const authHeader = request.headers.get("authorization");
-    let userId: string | null = null;
+    const userId: string | null = null;
     
     // Try to extract user from auth header, but don't fail if not present
     if (authHeader) {
@@ -22,7 +22,7 @@ export async function POST(request: Request) {
         // This is a simplified approach - in production you'd verify the token
         // For now, we'll just allow anonymous creation
         console.log("[api/videos/create] Auth header present, but allowing anonymous");
-      } catch (e) {
+      } catch {
         console.log("[api/videos/create] Could not parse auth, proceeding as anonymous");
       }
     }

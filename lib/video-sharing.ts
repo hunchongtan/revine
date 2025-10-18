@@ -29,7 +29,7 @@ export function getShareableUrl(video: VideoRecord): string {
  * Create a new video record in database
  */
 export async function createVideoRecord(data: {
-  userId: string;
+  userId: string | null;
   templateId: string;
   videoUrl: string;
   caption: string;
@@ -41,15 +41,18 @@ export async function createVideoRecord(data: {
     return null;
   }
 
-  const { data: video, error } = await supabase
+  const insertData: VideoInsert = {
+    user_id: data.userId,
+    template_id: data.templateId,
+    video_url: data.videoUrl,
+    caption: data.caption,
+    visibility: data.visibility || "private",
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: video, error } = await (supabase as any)
     .from("remixes")
-    .insert({
-      user_id: data.userId,
-      template_id: data.templateId,
-      video_url: data.videoUrl,
-      caption: data.caption,
-      visibility: data.visibility || "private",
-    })
+    .insert(insertData)
     .select()
     .single();
 
@@ -74,7 +77,8 @@ export async function updateVideoVisibility(
     return null;
   }
 
-  const { data: video, error } = await supabase
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { data: video, error } = await (supabase as any)
     .from("remixes")
     .update({
       visibility,
@@ -152,10 +156,11 @@ export async function incrementVideoViews(videoId: string): Promise<void> {
   const supabase = getSupabaseServiceClient();
   if (!supabase) {
     console.error("[video-sharing] Supabase client not available");
-    return null;
+    return;
   }
 
-  await supabase.rpc("increment_video_views", { video_id: videoId });
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  await (supabase as any).rpc("increment_video_views", { video_id: videoId });
 }
 
 /**
@@ -165,7 +170,7 @@ export async function getPublicVideos(limit = 50): Promise<VideoRecord[]> {
   const supabase = getSupabaseServiceClient();
   if (!supabase) {
     console.error("[video-sharing] Supabase client not available");
-    return null;
+    return [];
   }
 
   const { data: videos, error } = await supabase

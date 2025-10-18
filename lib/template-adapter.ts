@@ -14,7 +14,7 @@ export type UnifiedTemplate = {
   title?: string // New format uses "title"
   description?: string
   category?: string // New format
-  thumbnail: string
+  thumbnail?: string
   thumbnailUrl?: string // New format uses "thumbnail_url"
   year: number
   defaultVoice: string
@@ -32,6 +32,9 @@ export type UnifiedTemplate = {
  * Convert old template format to unified format
  */
 export function adaptOldTemplate(template: OldTemplate): UnifiedTemplate {
+  // Default voice ID for old templates (using a common voice)
+  const defaultVoiceId = "2EiwWnXFnvU5JabPnv8n"; // Clyde voice
+  
   return {
     id: template.id,
     name: template.name,
@@ -40,8 +43,8 @@ export function adaptOldTemplate(template: OldTemplate): UnifiedTemplate {
     thumbnail: template.thumbnail,
     thumbnailUrl: template.thumbnail,
     year: template.year,
-    defaultVoice: template.defaultVoice,
-    defaultVoiceId: template.defaultVoice,
+    defaultVoice: defaultVoiceId,
+    defaultVoiceId: defaultVoiceId,
     delivery: template.delivery,
     audioScript: template.audioScript,
     videoPrompt: template.videoPrompt,
@@ -85,9 +88,8 @@ export function toOldTemplate(template: UnifiedTemplate): OldTemplate {
     id: template.id,
     name: template.name,
     description: template.description || "",
-    thumbnail: template.thumbnail,
+    thumbnail: template.thumbnail || template.thumbnailUrl,
     year: template.year as 2013 | 2014 | 2015 | 2016,
-    defaultVoice: template.defaultVoice,
     delivery: template.delivery || "full_line",
     audioScript: template.audioScript,
     videoPrompt: template.videoPrompt,

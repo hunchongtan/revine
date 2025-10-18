@@ -21,7 +21,7 @@ export async function PATCH(
 
     // Get user ID from request headers if available (optional - allows anonymous)
     const authHeader = request.headers.get("authorization");
-    let userId: string | null = null;
+    const userId: string | null = null;
     
     if (authHeader) {
       console.log("[api/videos/visibility] Auth header present, but allowing anonymous");
