@@ -1,7 +1,9 @@
 "use client"
 
 import { useSearchParams } from "next/navigation"
-import { getTemplate } from "@/lib/templates"
+import { useState, useEffect } from "react"
+import { fetchTemplate, getTemplateThumbnailUrl } from "@/lib/services/templates"
+import { adaptNewTemplate } from "@/lib/template-adapter"
 import { GeneratePanel } from "@/components/generate-panel"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
@@ -9,6 +11,27 @@ import Link from "next/link"
 export default function GeneratePage() {
   const searchParams = useSearchParams()
   const templateId = searchParams.get("template")
+  const [template, setTemplate] = useState<any>(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    async function loadTemplate() {
+      if (!templateId) {
+        setLoading(false)
+        return
+      }
+
+      const data = await fetchTemplate(templateId)
+      if (data) {
+        const adapted = adaptNewTemplate(data)
+        adapted.thumbnail = getTemplateThumbnailUrl(data.thumbnail_url)
+        setTemplate(adapted)
+      }
+      setLoading(false)
+    }
+
+    loadTemplate()
+  }, [templateId])
 
   if (!templateId) {
     return (
@@ -25,7 +48,16 @@ export default function GeneratePage() {
     )
   }
 
-  const template = getTemplate(templateId)
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center bg-[#f3f3f3]">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-[#00bf8f] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-[#8a8a8a] text-lg">Loading template...</p>
+        </div>
+      </main>
+    )
+  }
 
   if (!template) {
     return (

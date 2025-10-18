@@ -62,7 +62,7 @@ export function adaptNewTemplate(template: NewTemplate): UnifiedTemplate {
     id: template.id,
     name: template.title,
     title: template.title,
-    description: `${template.category} • ${template.year}`,
+    description: template.category,
     category: template.category,
     thumbnail: template.thumbnail_url,
     thumbnailUrl: template.thumbnail_url,
