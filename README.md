@@ -36,7 +36,7 @@ Create viral Vine-inspired videos in seconds with AI-powered generation. Turn yo
 - **Favourites System**: 
   - Save templates locally as a guest
   - Sync favourites across devices when signed in
-- **Public Gallery**: Browse videos created by the community (coming soon)
+- **Public Gallery**: Browse videos created by the community
 - **Filter & Search**: Find templates by year (2013-2016) or search by name
 - **Responsive Design**: Works beautifully on mobile and desktop
 
@@ -74,6 +74,8 @@ SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
 
 # App URL (required for video sharing)
 NEXT_PUBLIC_APP_URL=http://localhost:3000
+# In production, set this to your actual domain:
+# NEXT_PUBLIC_APP_URL=https://yourdomain.com
 ```
 
 **Note**: The app works without any API keys! It automatically falls back to mock data for development.
@@ -135,7 +137,7 @@ revine/
 │   ├── favourites/
 │   │   └── page.tsx             # User's saved templates
 │   ├── discover/
-│   │   └── page.tsx             # Public gallery (coming soon)
+│   │   └── page.tsx             # Public gallery
 │   ├── remixes/
 │   │   └── public/
 │   │       └── page.tsx         # Public remixes page
@@ -239,13 +241,15 @@ Generates text-to-speech audio using ElevenLabs.
 ```
 
 ### POST `/api/video`
-Generates video using Fal.ai with automatic polling until completion.
+Generates video using Fal.ai VEO 3.1 with automatic polling until completion.
 
 **Request:**
 ```json
 {
-  "prompt": "6s handheld POV; point to shoes...",
-  "imageUrl": "https://..."
+  "templateId": "what_are_those",
+  "imageUrl": "https://...",
+  "referenceThumbnail": "https://...",
+  "mode": "strict"
 }
 ```
 
@@ -519,7 +523,7 @@ Mock data will be used automatically.
 
 ### Current State
 - ✅ 23 classic Vine templates
-- ✅ AI-powered video generation
+- ✅ AI-powered video generation (Fal.ai VEO 3.1)
 - ✅ User authentication
 - ✅ Favourites system with sync
 - ✅ Welcome modal for new users
@@ -530,6 +534,7 @@ Mock data will be used automatically.
 - ✅ Native share API integration
 - ✅ Anonymous video creation
 - ✅ Public remixes gallery with discovery
+- ✅ Mobile-optimized navigation and spacing
 
 ### Coming Soon
 - 🔄 User profile pages
