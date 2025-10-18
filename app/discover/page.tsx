@@ -28,9 +28,9 @@ async function getPublicVideos(): Promise<VideoRecord[]> {
 
   console.log("[discover] Fetched videos from DB:", videos?.length || 0)
   
-  // Remove duplicates by video_url (in case there are duplicate records)
+  // Remove duplicates by id (in case there are duplicate records)
   const uniqueVideos = (videos as VideoRecord[]) ? 
-    Array.from(new Map((videos as VideoRecord[]).map(v => [v.video_url, v])).values()) : 
+    Array.from(new Map((videos as VideoRecord[]).map(v => [v.id, v])).values()) : 
     []
 
   console.log("[discover] After deduplication:", uniqueVideos.length)
