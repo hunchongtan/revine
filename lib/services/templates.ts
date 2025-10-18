@@ -231,7 +231,9 @@ export async function syncLocalFavourites(userId: string): Promise<void> {
       .eq("user_id", userId);
 
     const existingIds = new Set(
-      (existing as Array<{ template_id: string }> | null)?.map((f) => f.template_id) || []
+      (existing as Array<{ template_id: string }> | null)?.map(
+        (f) => f.template_id
+      ) || []
     );
 
     // Insert new favourites (skip existing ones)

@@ -17,6 +17,16 @@ Create viral Vine-inspired videos in seconds with AI-powered generation. Turn yo
   - FFmpeg muxing for final output
 - **Download & Share**: Export MP4 videos and copy captions
 
+### Video Sharing & Privacy
+- **Shareable Links**: Every video gets a unique shareable link
+- **Privacy Controls**: Toggle between private (link-only) and public (discoverable)
+- **Two URL Structures**:
+  - Private: `/v/t/{token}` - Unguessable 12-character token
+  - Public: `/v/{slug}` - SEO-friendly slug based on caption
+- **Native Share**: Share button with native mobile share API and clipboard fallback
+- **Standalone Pages**: Full-screen video viewer pages with Open Graph metadata
+- **Anonymous Support**: Create and share videos without signing in
+
 ### User Experience
 - **Welcome Modal**: First-time visitors get a friendly introduction to the platform
 - **Guest Mode**: Full access to all features without signing in
@@ -56,45 +66,39 @@ ELEVENLABS_API_KEY=...
 FAL_API_KEY=...
 
 # Supabase (optional - enables authentication & database features)
-SUPABASE_URL=https://xxxxx.supabase.co
-SUPABASE_ANON_KEY=eyJhbGc...
+NEXT_PUBLIC_SUPABASE_URL=https://xxxxx.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGc...
 SUPABASE_SERVICE_ROLE_KEY=eyJhbGc...
+
+# App URL (required for video sharing)
+NEXT_PUBLIC_APP_URL=http://localhost:3000
 ```
 
 **Note**: The app works without any API keys! It automatically falls back to mock data for development.
 
-**Required keys** (all optional for development):
-- `OPENAI_API_KEY` - For caption generation
-- `ELEVENLABS_API_KEY` - For text-to-speech (9 voices configured)
-- `FAL_API_KEY` - For video generation (Sora-2 model)
-- `SUPABASE_URL` - For storage (server-side)
-- `SUPABASE_ANON_KEY` - For client-side storage access (server or public)
-- `SUPABASE_SERVICE_ROLE_KEY` - For server-side storage uploads
-
-Client-side Supabase variables can also be provided with public prefixes. Either naming works:
-
-```bash
-# Option A: Public-prefixed (recommended for Next.js client usage)
-NEXT_PUBLIC_SUPABASE_URL=...
-NEXT_PUBLIC_SUPABASE_ANON_KEY=...
-
-# Option B: Unprefixed (also supported)
-SUPABASE_URL=...
-SUPABASE_ANON_KEY=...
-```
+**Environment Variables:**
+- `OPENAI_API_KEY` - For caption generation (optional)
+- `ELEVENLABS_API_KEY` - For text-to-speech with 9 voices (optional)
+- `FAL_API_KEY` - For video generation using Fal.ai (optional)
+- `NEXT_PUBLIC_SUPABASE_URL` - Supabase project URL (optional)
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` - Supabase anonymous key (optional)
+- `SUPABASE_SERVICE_ROLE_KEY` - Supabase service role key (optional)
+- `NEXT_PUBLIC_APP_URL` - Base URL for shareable links (required for sharing features)
 
 ### Supabase Setup (Optional)
 
-For full authentication and database features:
+For full authentication, database features, and video sharing:
 
 1. Create a Supabase project at [supabase.com](https://supabase.com)
 2. Run the SQL migrations in `supabase/migrations/` in order:
    - `001_initial_schema.sql` - Creates tables, RLS policies, and storage buckets
    - `002_seed_templates.sql` - Seeds 23 classic Vine templates
+   - `003_add_video_sharing.sql` - Adds video sharing and visibility features
    - `003_remix_functions.sql` - Adds helper functions
+   - `004_add_view_counter_rpc.sql` - Adds view counter function
+   - `005_allow_anonymous_videos.sql` - Allows anonymous video creation
+   - `006_fix_generate_slug.sql` - Fixes slug generation for public videos
 3. Add your Supabase credentials to `.env.local`
-
-See [HANDOFF_SUMMARY.md](./HANDOFF_SUMMARY.md) for detailed Supabase setup instructions.
 
 ### Development
 
@@ -103,6 +107,19 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+### Build for Production
+
+```bash
+npm run build
+npm start
+```
+
+### Linting
+
+```bash
+npm run lint
+```
 
 ## 📁 Project Structure
 
@@ -115,9 +132,17 @@ revine/
 │   │   └── page.tsx             # Video generation page
 │   ├── favourites/
 │   │   └── page.tsx             # User's saved templates
+│   ├── discover/
+│   │   └── page.tsx             # Public gallery (coming soon)
 │   ├── remixes/
 │   │   └── public/
-│   │       └── page.tsx         # Public gallery (coming soon)
+│   │       └── page.tsx         # Public remixes page
+│   ├── v/
+│   │   ├── [slug]/
+│   │   │   └── page.tsx         # Public video viewer
+│   │   └── t/
+│   │       └── [token]/
+│   │           └── page.tsx     # Private video viewer
 │   ├── auth/
 │   │   └── callback/
 │   │       └── page.tsx         # OAuth/magic link callback handler
@@ -125,14 +150,19 @@ revine/
 │       ├── caption/             # OpenAI caption generation
 │       ├── tts/                 # ElevenLabs text-to-speech
 │       ├── video/               # Fal.ai video generation
-│       └── mux/                 # FFmpeg audio/video muxing
+│       ├── mux/                 # FFmpeg audio/video muxing
+│       └── videos/              # Video CRUD & sharing
+│           ├── create/          # Create video record
+│           ├── [id]/            # Get video by ID
+│           └── [id]/visibility/ # Update video visibility
 ├── components/
 │   ├── welcome-modal.tsx        # First-visit welcome dialog
 │   ├── auth-modal.tsx           # Sign in/up modal
 │   ├── user-menu.tsx            # User dropdown menu
 │   ├── template-card.tsx        # Template card with hover effects
 │   ├── generate-panel.tsx       # Main generation interface
-│   ├── result-player.tsx        # Video player with controls
+│   ├── result-player.tsx        # Video player with share controls
+│   ├── video-viewer.tsx         # Standalone video page component
 │   ├── upload-face.tsx          # Image upload with drag-drop
 │   ├── voice-select.tsx         # Voice picker dropdown
 │   ├── year-select.tsx          # Year filter dropdown
@@ -146,12 +176,12 @@ revine/
 │   │   ├── video.ts             # Fal.ai provider
 │   │   └── mux.ts               # FFmpeg provider
 │   ├── services/
-│   │   ├── templates.ts         # Template CRUD & favourites
-│   │   └── remixes.ts           # User-generated video management
+│   │   └── templates.ts         # Template CRUD & favourites
 │   ├── hooks/
 │   │   └── use-auth.tsx         # Authentication context & hooks
 │   ├── supabase-client.ts       # Browser Supabase client
 │   ├── supabase-server.ts       # Server-side Supabase client
+│   ├── video-sharing.ts         # Video sharing utilities
 │   ├── templates.ts             # Template definitions (23 templates)
 │   ├── template-adapter.ts      # DB/hardcoded compatibility layer
 │   └── types.ts                 # TypeScript type definitions
@@ -242,6 +272,73 @@ Muxes audio and video together using FFmpeg and uploads to Supabase.
 }
 ```
 
+### Video Sharing APIs
+
+#### POST `/api/videos/create`
+Creates a video record and generates shareable URL.
+
+**Request:**
+```json
+{
+  "templateId": "what_are_those",
+  "videoUrl": "https://...",
+  "caption": "WHAT ARE THOOOSE?!",
+  "visibility": "private"
+}
+```
+
+**Response:**
+```json
+{
+  "video": { ... },
+  "shareUrl": "https://yourdomain.com/v/t/{token}"
+}
+```
+
+#### PATCH `/api/videos/{id}/visibility`
+Updates video visibility (private ↔ public).
+
+**Request:**
+```json
+{
+  "visibility": "public"
+}
+```
+
+**Response:**
+```json
+{
+  "video": { ... },
+  "shareUrl": "https://yourdomain.com/v/{slug}"
+}
+```
+
+#### GET `/api/videos/{id}`
+Fetches a single video by ID.
+
+## 🎨 Tech Stack
+
+### Frontend
+- **Next.js 15.5.4** - React framework with App Router
+- **React 19.1.0** - UI library
+- **TypeScript 5** - Type safety
+- **Tailwind CSS 4.1.9** - Styling
+- **Radix UI** - Accessible component primitives
+- **shadcn/ui** - Beautiful UI components
+- **Lucide Icons** - Icon library
+
+### Backend & Services
+- **Supabase** - Authentication, database, and storage
+- **OpenAI GPT-4o-mini** - Caption generation
+- **ElevenLabs** - Text-to-speech
+- **Fal.ai** - AI video generation
+- **FFmpeg** - Audio/video processing
+
+### Development Tools
+- **ESLint** - Code linting
+- **PostCSS** - CSS processing
+- **Sharp** - Image optimization
+
 ## 🎨 Design System
 
 ### Color Palette
@@ -278,7 +375,6 @@ Edit `lib/templates.ts`:
   description: "Short description",
   thumbnail: "/path/to/thumbnail.jpg",
   year: 2015,
-  defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Voice ID
   delivery: "full_line",
   audioScript: "Your audio script here",
   videoPrompt: "Detailed video generation prompt",
@@ -321,6 +417,19 @@ Guest → Browse/Generate (localStorage favourites)
 User → Synced favourites + Profile + Future features
 ```
 
+### Video Sharing Flow
+```
+Video Generated → Auto-create record (private by default)
+                       ↓
+                  Toggle visibility?
+                       ↓
+          ┌────────────┴────────────┐
+          ↓                         ↓
+    Private Link                Public Link
+    /v/t/{token}                /v/{slug}
+    (unguessable)               (SEO-friendly)
+```
+
 ### Mock Fallbacks
 When API keys are missing, the app:
 - Uses mock captions ("What are those?!")
@@ -340,14 +449,21 @@ When API keys are missing, the app:
 All Supabase tables have RLS policies:
 - Users can only view/edit their own profile
 - Users can only manage their own favourites
-- Users can only create/edit/delete their own remixes
+- Users can only update their own videos (or anonymous videos)
 - All users can view templates (public)
-- All users can view public remixes
+- All users can view public videos
+- Private videos require share token or ownership
 
 ### Environment Variables
 - API keys are server-side only
 - Client-side code uses public Supabase anon key (safe)
 - Service role key is never exposed to the client
+
+### Video Sharing Security
+- Share tokens are cryptographically random (9 bytes → 12 chars base64)
+- RLS policies enforce ownership verification
+- Anonymous users can create videos but not modify others'
+- Public videos are intentionally discoverable
 
 ## 📊 Database Schema
 
@@ -355,11 +471,18 @@ All Supabase tables have RLS policies:
 - **profiles**: User profiles (created automatically on signup)
 - **templates**: 23 Vine templates with all metadata
 - **favourites**: Many-to-many relationship (users ↔ templates)
-- **remixes**: User-generated videos with metadata
+- **remixes**: User-generated videos with metadata and sharing info
 
 ### Storage Buckets
 - **templates**: Public bucket for template thumbnails
 - **renders**: Public bucket for generated audio/video files
+
+### Video Sharing Columns (remixes table)
+- `visibility`: 'private' | 'public' (default: 'private')
+- `share_token`: Unique 12-char token (auto-generated)
+- `slug`: URL-friendly slug for public videos (auto-generated)
+- `user_id`: Owner ID (nullable for anonymous)
+- `views_count`: View counter
 
 See `supabase/migrations/` for complete schema definitions.
 
@@ -383,6 +506,13 @@ Mock data will be used automatically.
 - Mock video plays immediately (no API delay)
 - Real video generation takes 3-5 minutes (Fal.ai processing)
 
+### Testing Video Sharing
+1. Generate a video
+2. Click "Share This Vine" to test sharing
+3. Toggle visibility between Private and Public
+4. Visit the shareable URL in a new tab
+5. Test as guest (logged out) to verify access controls
+
 ## 🚧 Roadmap
 
 ### Current State
@@ -393,14 +523,25 @@ Mock data will be used automatically.
 - ✅ Welcome modal for new users
 - ✅ Year filtering and search
 - ✅ Download videos
+- ✅ Video sharing with privacy controls
+- ✅ Standalone video viewer pages
+- ✅ Native share API integration
+- ✅ Anonymous video creation
 
 ### Coming Soon
-- 🔄 Public remixes gallery
+- 🔄 Public remixes gallery with discovery
 - 🔄 User profile pages
-- 🔄 Social sharing features
 - 🔄 Video history/library
+- 🔄 Video deletion functionality
+- 🔄 View counter display
 - 🔄 More templates (2017+ memes)
 - 🔄 Custom template creation
+- 🔄 Video analytics dashboard
+
+## 🐛 Known Issues
+
+- Supabase TypeScript types occasionally require `as any` casting due to type inference limitations
+- Some database operations use type assertions to bypass strict TypeScript checks
 
 ## 📄 License
 
