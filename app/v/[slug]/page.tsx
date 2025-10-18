@@ -11,16 +11,12 @@ interface PageProps {
 export default async function PublicVideoPage({ params }: PageProps) {
   const { slug } = await params;
 
-  console.log("[v/[slug]] Attempting to load video with slug:", slug);
-
   const video = await getVideoBySlug(slug);
 
   if (!video) {
-    console.log("[v/[slug]] Video not found for slug:", slug);
     notFound();
   }
 
-  console.log("[v/[slug]] Successfully loaded video:", video.id);
   return <VideoViewer video={video} />;
 }
 

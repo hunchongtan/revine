@@ -134,8 +134,6 @@ export async function getVideoBySlug(
     return null;
   }
 
-  console.log("[video-sharing] Looking for video with slug:", slug);
-
   const { data: video, error } = await supabase
     .from("remixes")
     .select("*")
@@ -145,11 +143,9 @@ export async function getVideoBySlug(
 
   if (error) {
     console.error("[video-sharing] Failed to get video by slug:", error);
-    console.error("[video-sharing] Error details:", { slug, error: error.message, code: error.code });
     return null;
   }
 
-  console.log("[video-sharing] Found video:", video?.id);
   return video;
 }
 
