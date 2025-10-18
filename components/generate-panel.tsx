@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { UploadFace } from "./upload-face"
@@ -18,11 +18,26 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
   const [imageUrl, setImageUrl] = useState<string>("")
   const [voice, setVoice] = useState<string>(template.defaultVoice)
   const [isGenerating, setIsGenerating] = useState(false)
+  const [spinnerMessage, setSpinnerMessage] = useState<string | undefined>(undefined)
   const [result, setResult] = useState<{
     caption: string
     videoUrl: string
   } | null>(null)
   const { toast } = useToast()
+
+  // Long-job indicator: Show meme message after 15s
+  useEffect(() => {
+    if (!isGenerating) {
+      setSpinnerMessage(undefined)
+      return
+    }
+
+    const timeout = setTimeout(() => {
+      setSpinnerMessage("still cooking… don't drop your croissant 🥐")
+    }, 15000)
+
+    return () => clearTimeout(timeout)
+  }, [isGenerating])
 
   const handleGenerate = async () => {
     if (!imageUrl) {
@@ -94,6 +109,17 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
     }
   }
 
+  const handleCopyCaption = () => {
+    const text = result?.caption?.trim()
+    if (!text) return
+    
+    navigator.clipboard.writeText(text)
+    toast({
+      title: "Copied!",
+      description: "Caption copied to clipboard",
+    })
+  }
+
   const handleGenerateAgain = () => {
     setResult(null)
     setImageUrl("")
@@ -106,7 +132,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
         videoUrl={result.videoUrl}
         caption={result.caption}
         onDownload={handleDownload}
-        onCopyCaption={() => {}}
+        onCopyCaption={handleCopyCaption}
         onGenerateAgain={handleGenerateAgain}
       />
     )
@@ -114,7 +140,7 @@ export function GeneratePanel({ template }: GeneratePanelProps) {
 
   return (
     <>
-      <SpinnerOverlay isVisible={isGenerating} />
+      <SpinnerOverlay isVisible={isGenerating} message={spinnerMessage} />
       <Card className="p-6 space-y-6 bg-white">
         {/* Template Summary */}
         <div className="p-4 rounded-lg border" style={{ backgroundColor: "#E8F8F3", borderColor: "#D0F0E8" }}>

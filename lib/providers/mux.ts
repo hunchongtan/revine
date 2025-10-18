@@ -1,4 +1,7 @@
 import { hasEnvVar, warnMissingEnv } from "@/lib/env";
+import { uploadToStorage } from "@/lib/supabase-server";
+import { FFmpeg } from "@ffmpeg/ffmpeg";
+import { fetchFile, toBlobURL } from "@ffmpeg/util";
 
 export type MuxMediaParams = {
   audioUrl: string;
@@ -16,6 +19,7 @@ let warnedAboutMuxStub = false;
 export async function muxMedia({
   audioUrl,
   videoUrl,
+  delayMs = 0,
 }: MuxMediaParams): Promise<MuxMediaResult> {
   const requiredKeys = [
     "SUPABASE_URL" as const,
@@ -31,15 +35,94 @@ export async function muxMedia({
     };
   }
 
-  if (!warnedAboutMuxStub) {
-    console.warn(
-      "[mux] Media muxing not yet implemented. Returning original video URL."
-    );
-    warnedAboutMuxStub = true;
-  }
+  try {
+    // Initialize FFmpeg
+    const ffmpeg = new FFmpeg();
 
-  return {
-    finalUrl: videoUrl,
-    isMock: true,
-  };
+    // Load FFmpeg core
+    const baseURL = "https://unpkg.com/@ffmpeg/core@0.12.6/dist/esm";
+    await ffmpeg.load({
+      coreURL: await toBlobURL(`${baseURL}/ffmpeg-core.js`, "text/javascript"),
+      wasmURL: await toBlobURL(
+        `${baseURL}/ffmpeg-core.wasm`,
+        "application/wasm"
+      ),
+    });
+
+    // Download input files
+    const [videoData, audioData] = await Promise.all([
+      fetchFile(videoUrl),
+      fetchFile(audioUrl),
+    ]);
+
+    // Write input files to FFmpeg filesystem
+    await ffmpeg.writeFile("input_video.mp4", videoData);
+    await ffmpeg.writeFile("input_audio.mp3", audioData);
+
+    // Build FFmpeg command for muxing
+    // -c:v copy: copy video stream without re-encoding (faster)
+    // -c:a aac: encode audio to AAC for better compatibility
+    // -shortest: end when shortest stream ends
+    // -avoid_negative_ts make_zero: handle timestamp issues
+    const command = [
+      "-i",
+      "input_video.mp4",
+      "-i",
+      "input_audio.mp3",
+      "-c:v",
+      "copy",
+      "-c:a",
+      "aac",
+      "-shortest",
+      "-avoid_negative_ts",
+      "make_zero",
+      "-y", // overwrite output file
+      "output.mp4",
+    ];
+
+    // Add audio delay if specified
+    if (delayMs > 0) {
+      command.splice(2, 0, "-itsoffset", `${delayMs / 1000}`);
+    }
+
+    // Execute FFmpeg command
+    await ffmpeg.exec(command);
+
+    // Read the output file
+    const outputData = await ffmpeg.readFile("output.mp4");
+
+    // Upload to Supabase storage
+    const filename = `muxed-${Date.now()}.mp4`;
+    const storagePath = `renders/videos/${filename}`;
+
+    const uploadResult = await uploadToStorage({
+      bucket: "renders",
+      path: storagePath,
+      data: outputData,
+      contentType: "video/mp4",
+    });
+
+    if (!uploadResult.publicUrl) {
+      throw new Error("Failed to get public URL after upload");
+    }
+
+    return {
+      finalUrl: uploadResult.publicUrl,
+      isMock: false,
+    };
+  } catch (error) {
+    console.error("[mux] FFmpeg muxing failed:", error);
+
+    if (!warnedAboutMuxStub) {
+      console.warn(
+        "[mux] Falling back to original video URL due to muxing error."
+      );
+      warnedAboutMuxStub = true;
+    }
+
+    return {
+      finalUrl: videoUrl,
+      isMock: true,
+    };
+  }
 }

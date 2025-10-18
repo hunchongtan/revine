@@ -1,15 +1,15 @@
 export interface Template {
-  id: string
-  name: string
-  description: string
-  thumbnail: string
-  year: 2013 | 2014 | 2015 | 2016
-  defaultVoice: string
-  delivery: string
-  audioScript: string
-  videoPrompt: string
-  beatSheet: number[]
-  captionPrompt: string
+  id: string;
+  name: string;
+  description: string;
+  thumbnail: string;
+  year: 2013 | 2014 | 2015 | 2016;
+  defaultVoice: string;
+  delivery: string;
+  audioScript: string;
+  videoPrompt: string;
+  beatSheet: number[];
+  captionPrompt: string;
 }
 
 export const templates: Template[] = [
@@ -20,7 +20,7 @@ export const templates: Template[] = [
     description: "Tiny stunt celebration",
     thumbnail: "/backyard-stunt-celebration.jpg",
     year: 2013,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "narration",
     audioScript: "He ain't gonna do it… He did it. He did it for the Vine!",
     videoPrompt: "6s backyard; hesitate→cut→tiny stunt→celebrate.",
@@ -33,7 +33,7 @@ export const templates: Template[] = [
     description: "Deadpan refusal",
     thumbnail: "/cereal-spoon-refusal.jpg",
     year: 2013,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "narration",
     audioScript: "He refuses the spoon… again.",
     videoPrompt: "6s close-up spoon vs face, comedic refusal, quick cuts.",
@@ -46,10 +46,11 @@ export const templates: Template[] = [
     description: "Chaotic quack explosion",
     thumbnail: "/toy-ducks-screaming.jpg",
     year: 2013,
-    defaultVoice: "angry_kid",
+    defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "AAAHHH!",
-    videoPrompt: "6s toy ducks squeeze → explosion of quacks, chaotic handheld.",
+    videoPrompt:
+      "6s toy ducks squeeze → explosion of quacks, chaotic handheld.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "chaotic energy ≤5 words",
   },
@@ -60,7 +61,7 @@ export const templates: Template[] = [
     description: "Vroom vroom energy",
     thumbnail: "/car-interior-steering.jpg",
     year: 2014,
-    defaultVoice: "sassy_drama",
+    defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "I'm in me mum's car. Vroom vroom.",
     videoPrompt: "6s car interior, forward lean, tiny steering motions.",
@@ -73,7 +74,7 @@ export const templates: Template[] = [
     description: "Arm sweep revelation",
     thumbnail: "/park-birds-arm-sweep.jpg",
     year: 2014,
-    defaultVoice: "sassy_drama",
+    defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Look at all those chickens.",
     videoPrompt: "6s park shot, arm sweep to birds, slight zoom.",
@@ -86,7 +87,7 @@ export const templates: Template[] = [
     description: "Kitchen pun flip",
     thumbnail: "/kitchen-tortilla-flip.jpg",
     year: 2014,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Hurricane Katrina… more like Hurricane Tortilla",
     videoPrompt: "6s kitchen flip with tortilla, pun on cut.",
@@ -99,7 +100,7 @@ export const templates: Template[] = [
     description: "Hallway near-miss",
     thumbnail: "/hallway-croissant-drop.jpg",
     year: 2014,
-    defaultVoice: "angry_kid",
+    defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "Stop! I could've dropped my croissant!",
     videoPrompt: "6s hallway, near-drop, startled yelp, quick tilt.",
@@ -112,7 +113,7 @@ export const templates: Template[] = [
     description: "Selfie confidence",
     thumbnail: "/selfie-eyebrows-pose.jpg",
     year: 2014,
-    defaultVoice: "sassy_drama",
+    defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Eyebrows on fleek.",
     videoPrompt: "6s selfie cam, brow pose, sparkle overlay.",
@@ -125,7 +126,7 @@ export const templates: Template[] = [
     description: "Trick celebration",
     thumbnail: "/skate-trick-reaction.jpg",
     year: 2014,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "That was legitness!",
     videoPrompt: "6s skate/scooter mini trick → reaction cut.",
@@ -139,7 +140,7 @@ export const templates: Template[] = [
     description: "Sassy confrontation",
     thumbnail: "/sassy-lip-sync-eyebrow-raise.jpg",
     year: 2015,
-    defaultVoice: "sassy_drama",
+    defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Why you always lyin'… hmm? Why you always lyin'!",
     videoPrompt: "6s outdoor; sassy lip-sync; dolly; eyebrow raise.",
@@ -152,7 +153,7 @@ export const templates: Template[] = [
     description: "Phone prank triumph",
     thumbnail: "/phone-prank-reaction.jpg",
     year: 2015,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Deez Nuts, ha! got eem!",
     videoPrompt: "6s phone prank vibe, triumphant zoom on punchline.",
@@ -165,10 +166,11 @@ export const templates: Template[] = [
     description: "Point and roast",
     thumbnail: "/shoes-pointing-dramatic-zoom.jpg",
     year: 2015,
-    defaultVoice: "angry_kid",
+    defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "WHAT ARE THOOOOOSE?!",
-    videoPrompt: "6s handheld POV; point to shoes; dramatic zoom; 2015 phone grain.",
+    videoPrompt:
+      "6s handheld POV; point to shoes; dramatic zoom; 2015 phone grain.",
     beatSheet: [0, 1.5, 3.2, 5, 6],
     captionPrompt: "1-line nostalgic roast + ≤2 short hashtags",
   },
@@ -178,7 +180,7 @@ export const templates: Template[] = [
     description: "Bathroom goggles scream",
     thumbnail: "/bathroom-goggles-scream.jpg",
     year: 2015,
-    defaultVoice: "angry_kid",
+    defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "It's Wednesday, my dudes! AAAHHHHH!",
     videoPrompt: "6s bathroom selfie, goggles, scream hold.",
@@ -191,7 +193,7 @@ export const templates: Template[] = [
     description: "Relaxed shrug vibes",
     thumbnail: "/hot-tub-two-people.jpg",
     year: 2015,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Two bros chillin' in a hot tub, 'cause they're not gay.",
     videoPrompt: "6s wide shot, two seats apart, relaxed shrug.",
@@ -204,7 +206,7 @@ export const templates: Template[] = [
     description: "Overacted collapse",
     thumbnail: "/overacted-reaction-collapse.jpg",
     year: 2015,
-    defaultVoice: "angry_kid",
+    defaultVoice: "2EiwWnXFnvU5JabPnv8n", // Angry Kid (Clyde - Intense)
     delivery: "full_line",
     audioScript: "Miss Keisha?! She dead!",
     videoPrompt: "6s overacted shake + comedic collapse reaction.",
@@ -217,7 +219,7 @@ export const templates: Template[] = [
     description: "Deadpan ask",
     thumbnail: "/deadpan-phone-smack.jpg",
     year: 2015,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "So, no head?",
     videoPrompt: "6s deadpan ask → instant smash cut (phone smack implied).",
@@ -230,7 +232,7 @@ export const templates: Template[] = [
     description: "Floating potato gag",
     thumbnail: "/floating-potato-airy.jpg",
     year: 2015,
-    defaultVoice: "sassy_drama",
+    defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "A potato flew around my room",
     videoPrompt: "6s slow pan, floating potato gag, airy vibe.",
@@ -243,7 +245,7 @@ export const templates: Template[] = [
     description: "Spelling bee zoom",
     thumbnail: "/spelling-bee-podium.jpg",
     year: 2015,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Iridocyclitis.",
     videoPrompt: "6s spelling-bee podium style, zoom on mouth.",
@@ -257,7 +259,7 @@ export const templates: Template[] = [
     description: "Doorway pose bow",
     thumbnail: "/placeholder.svg?height=192&width=256",
     year: 2016,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "Hi, welcome to Chili's!",
     videoPrompt: "6s doorway pose, quick bow, jump cut to grin.",
@@ -270,7 +272,7 @@ export const templates: Template[] = [
     description: "Sign reveal quip",
     thumbnail: "/placeholder.svg?height=192&width=256",
     year: 2016,
-    defaultVoice: "sassy_drama",
+    defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Road work ahead? Uh, yeah, I sure hope it does.",
     videoPrompt: "6s car POV, sign reveal → quip, slight shake.",
@@ -283,7 +285,7 @@ export const templates: Template[] = [
     description: "Sports announcer energy",
     thumbnail: "/sports-announcer-excitement.jpg",
     year: 2016,
-    defaultVoice: "sports_announcer",
+    defaultVoice: "IKne3meq5aSn9XLyUdCD", // Sports Announcer (Charlie - Hyped)
     delivery: "full_line",
     audioScript: "LeBROOOON JAAAAMES!",
     videoPrompt: "6s living room; whip-pan; zoom on shout; VHS edge.",
@@ -296,19 +298,19 @@ export const templates: Template[] = [
     description: "Storefront sign misread",
     thumbnail: "/placeholder.svg?height=192&width=256",
     year: 2016,
-    defaultVoice: "sassy_drama",
+    defaultVoice: "FGY2WhTYpPnrIDTdsKH5", // Sassy Drama (Laura - Sassy)
     delivery: "full_line",
     audioScript: "Free shavacadoo!",
     videoPrompt: "6s storefront sign misread, tight zoom on letters.",
     beatSheet: [0, 1.5, 3, 5, 6],
     captionPrompt: "sign misread ≤4 words",
   },
-]
+];
 
 export function getTemplate(id: string): Template | undefined {
-  return templates.find((t) => t.id === id)
+  return templates.find((t) => t.id === id);
 }
 
 export function getYears(): (2013 | 2014 | 2015 | 2016)[] {
-  return [2013, 2014, 2015, 2016]
+  return [2013, 2014, 2015, 2016];
 }
